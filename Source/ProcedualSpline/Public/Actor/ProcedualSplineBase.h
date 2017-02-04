@@ -3,9 +3,13 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
+#include "SplineUnit.h"
+#include "SplineUnitGenerator.h"
+#include "ProcedualSplineDirector.h"
+#include "Components/SplineComponent.h"
 #include "ProcedualSplineBase.generated.h"
 
-UCLASS()
+UCLASS(Blueprintable)
 class PROCEDUALSPLINE_API AProcedualSplineBase : public AActor
 {
 	GENERATED_BODY()
@@ -16,10 +20,18 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
 
-	
-	
+	// initialize procedure
+	void Init();
+
+	UPROPERTY(VisibleAnyWhere)
+	USplineComponent* Spline;
+
+	UPROPERTY(VisibleAnyWhere)
+	UStaticMeshComponent* StaticMesh;
+
+	TArray<FSplineUnit> SplineUnits;
+
+	USplineUnitGenerator* SplineUnitGenerator;
+	UProcedualSplineDirector* ProcedualSplineDirector;
 };

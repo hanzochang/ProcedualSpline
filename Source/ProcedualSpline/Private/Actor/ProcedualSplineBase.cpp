@@ -10,6 +10,7 @@ AProcedualSplineBase::AProcedualSplineBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    SplineUnitGenerator = CreateDefaultSubobject<USplineUnitGenerator>(FName("SplineUnitGenerator"));
 }
 
 // Called when the game starts or when spawned
@@ -18,11 +19,3 @@ void AProcedualSplineBase::BeginPlay()
 	Super::BeginPlay();
 	
 }
-
-// Called every frame
-void AProcedualSplineBase::Tick( float DeltaTime )
-{
-	Super::Tick( DeltaTime );
-
-}
-
