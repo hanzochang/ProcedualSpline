@@ -13,8 +13,14 @@ class PROCEDUALSPLINE_API USplineUnitGenerator : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	USplineUnitGenerator();
+	TArray<FSplineUnit> GenerateSplineUnits(FString Path);
 
-	static TArray<FSplineUnit> ParseJsonAndAssignSplineUnits(FString Path);
+private:
+	void ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &SplineUnits, TSharedPtr<FJsonObject> JsonObject);
+
+	ESplineUnit ParseWaveType(TSharedPtr<FJsonObject> json);
+	FVector ParseDistance(TSharedPtr<FJsonObject> json);
+	FVector ParseVertexVector(TSharedPtr<FJsonObject> json);
+	FString JsonFullPath(FString Path);
 };
