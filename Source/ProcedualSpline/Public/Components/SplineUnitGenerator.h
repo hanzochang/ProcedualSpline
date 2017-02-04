@@ -16,12 +16,5 @@ public:
 	// Sets default values for this component's properties
 	USplineUnitGenerator();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
-	
-	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
-
-		
-	
+	static TArray<FSplineUnit> ParseJsonAndAssignSplineUnits(FString Path);
 };
