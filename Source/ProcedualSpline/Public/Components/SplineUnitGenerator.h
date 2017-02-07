@@ -18,7 +18,6 @@ public:
 
 private:
 	void ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &SplineUnits, TSharedPtr<FJsonObject> JsonObject);
-
 	ESplineUnit ParseWaveType(TSharedPtr<FJsonObject> json);
 	FVector ParseDistance(TSharedPtr<FJsonObject> json);
 	FVector ParseVertexVector(TSharedPtr<FJsonObject> json);

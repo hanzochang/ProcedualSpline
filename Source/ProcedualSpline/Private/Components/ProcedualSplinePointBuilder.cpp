@@ -7,12 +7,13 @@
 // Sets default values for this component's properties
 UProcedualSplinePointBuilder::UProcedualSplinePointBuilder()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
+}
 
-	// ...
+void UProcedualSplinePointBuilder::Init()
+{
+
 }
 
 
@@ -20,9 +21,6 @@ UProcedualSplinePointBuilder::UProcedualSplinePointBuilder()
 void UProcedualSplinePointBuilder::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
@@ -30,7 +28,5 @@ void UProcedualSplinePointBuilder::BeginPlay()
 void UProcedualSplinePointBuilder::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
 }
 

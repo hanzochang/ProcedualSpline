@@ -7,30 +7,25 @@
 // Sets default values for this component's properties
 UProcedualSplineDirector::UProcedualSplineDirector()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
-
-// Called when the game starts
-void UProcedualSplineDirector::BeginPlay()
+void UProcedualSplineDirector::Init(USplineComponent *Spline, TArray<FSplineUnit> &SplineUnits,
+	                                UProcedualSplineInstanceBuilder *ProcedualSplineInstanceBuilder,
+	                                UProcedualSplinePointBuilder *ProcedualSplinePointBuilder)
 {
-	Super::BeginPlay();
+	for (auto SplineUnit : SplineUnits)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, SplineUnit.ToDebugString());
 
-	// ...
-	
+	}
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("‚Â‚¤‚©‚¾‚º"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(Spline->GetNumberOfSplinePoints()));
+	ProcedualSplinePointBuilder->Init();
+	ProcedualSplineInstanceBuilder->Init(Spline, SplineUnits);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::FromInt(Spline->GetNumberOfSplinePoints()));
+
+	//ProcedualSplineInstanceBuilder = CreateDefaultSubobject<UProcedualSplineInstanceBuilder>(FName("Sl"));
 }
-
-
-// Called every frame
-void UProcedualSplineDirector::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
-}
-

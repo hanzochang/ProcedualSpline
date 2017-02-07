@@ -6,6 +6,8 @@
 #include "SplineUnit.h"
 #include "SplineUnitGenerator.h"
 #include "ProcedualSplineDirector.h"
+#include "ProcedualSplineInstanceBuilder.h"
+#include "ProcedualSplinePointBuilder.h"
 #include "Components/SplineComponent.h"
 #include "ProcedualSplineBase.generated.h"
 
@@ -15,13 +17,10 @@ class PROCEDUALSPLINE_API AProcedualSplineBase : public AActor
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
 	AProcedualSplineBase();
 
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// initialize procedure
 	void Init();
 
 	UPROPERTY(VisibleAnyWhere)
@@ -30,8 +29,21 @@ public:
 	UPROPERTY(VisibleAnyWhere)
 	UStaticMeshComponent* StaticMesh;
 
+	UPROPERTY(VisibleAnyWhere)
 	TArray<FSplineUnit> SplineUnits;
 
+	UPROPERTY(VisibleAnyWhere)
 	USplineUnitGenerator* SplineUnitGenerator;
-	UProcedualSplineDirector* ProcedualSplineDirector;
+
+	UPROPERTY(VisibleAnyWhere)
+	UProcedualSplineDirector* ProcedualSplineDirector = NewObject<UProcedualSplineDirector>();
+	//UProcedualSplineDirector* ProcedualSplineDirector;
+
+	UPROPERTY(VisibleAnyWhere)
+	UProcedualSplineInstanceBuilder* ProcedualSplineInstanceBuilder = NewObject<UProcedualSplineInstanceBuilder>();
+	//UProcedualSplineInstanceBuilder* ProcedualSplineInstanceBuilder;
+
+	UPROPERTY(VisibleAnyWhere)
+	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder = NewObject<UProcedualSplinePointBuilder>();
+	//UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
 };
