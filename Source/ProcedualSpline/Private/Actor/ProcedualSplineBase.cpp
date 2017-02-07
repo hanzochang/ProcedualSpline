@@ -9,8 +9,12 @@ AProcedualSplineBase::AProcedualSplineBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	Init();
 
+	SetRootComponent(CreateDefaultSubobject<UStaticMeshComponent>(FName("SM")));
+    Spline = CreateDefaultSubobject<USplineComponent>(FName("Spline"));
+	Spline->SetupAttachment(StaticMesh);
+
+	Init();
 }
 
 void AProcedualSplineBase::Init()
