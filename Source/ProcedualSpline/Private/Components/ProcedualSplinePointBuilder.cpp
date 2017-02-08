@@ -1,36 +1,23 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ProcedualSpline.h"
 #include "ProcedualSplinePointBuilder.h"
 
-
-// Sets default values for this component's properties
-UProcedualSplinePointBuilder::UProcedualSplinePointBuilder()
+//void UProcedualSplinePointBuilder::Init(USplineComponent *Spline,
+//	TArray<FSplineUnit> &SplineUnits)
+void UProcedualSplinePointBuilder::Init()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true;
+	TArray<FVector> SplinePoints;
+	FVector StartPoint = FVector{ 0,0,0 };
+	int32 EdgeSplineUnitStartSplineNum = 0;
+	int32 counter = 0;
+//	EdgeSplineUnitStartSplineNum = Spline->GetNumberOfSplinePoints();
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("initialize"));
+//  GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(EdgeSplineUnitStartSplineNum));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::FromInt(counter));
 
-	// ...
 }
 
 
-// Called when the game starts
-void UProcedualSplinePointBuilder::BeginPlay()
-{
-	Super::BeginPlay();
 
-	// ...
-	
-}
-
-
-// Called every frame
-void UProcedualSplinePointBuilder::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
-}
 
