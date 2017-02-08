@@ -2,26 +2,22 @@
 
 #pragma once
 
-#include "Components/ActorComponent.h"
-#include "ProcedualSplineInstanceBuilder.h"
+#include "Components/PrimitiveComponent.h"
 #include "ProcedualSplinePointBuilder.h"
 #include "ProcedualSplineDirector.generated.h"
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class PROCEDUALSPLINE_API UProcedualSplineDirector : public UActorComponent
+/**
+ * 
+ */
+UCLASS()
+class PROCEDUALSPLINE_API UProcedualSplineDirector : public UPrimitiveComponent
 {
 	GENERATED_BODY()
 
-public:	
-	// Sets default values for this component's properties
-	UProcedualSplineDirector();
+public:
+	UProcedualSplinePointBuilder *ProcedualSplinePointBuilder;
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+public:
+	void Initialize(UProcedualSplinePointBuilder *ProcedualSplinePointBuilder);
 	
-	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
-
-	UProcedualSplineInstanceBuilder* ProcedualSplineInstanceBuilder;
-	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
 };
