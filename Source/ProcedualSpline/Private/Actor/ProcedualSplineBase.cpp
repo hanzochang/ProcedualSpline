@@ -14,12 +14,16 @@ AProcedualSplineBase::AProcedualSplineBase()
     Spline = CreateDefaultSubobject<USplineComponent>(FName("Spline"));
 	Spline->SetupAttachment(StaticMesh);
 
+    ProcedualSplineDirector = CreateDefaultSubobject<UProcedualSplineDirector>(FName("SplineDirector"));
+    ProcedualSplinePointBuilder = CreateDefaultSubobject<UProcedualSplinePointBuilder>(FName("SplinePointBuilder"));
+
 	Init();
 }
 
 void AProcedualSplineBase::Init()
 {
 	SplineUnits = SplineUnitGenerator->GenerateSplineUnits("splinetest.json");
+	ProcedualSplineDirector->Initialize(ProcedualSplinePointBuilder);
 }
 
 // Called when the game starts or when spawned

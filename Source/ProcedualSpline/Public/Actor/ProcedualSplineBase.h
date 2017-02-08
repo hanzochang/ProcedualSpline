@@ -6,6 +6,7 @@
 #include "SplineUnit.h"
 #include "SplineUnitGenerator.h"
 #include "ProcedualSplineDirector.h"
+#include "ProcedualSplinePointBuilder.h"
 #include "Components/SplineComponent.h"
 #include "ProcedualSplineBase.generated.h"
 
@@ -34,4 +35,5 @@ public:
 
 	USplineUnitGenerator* SplineUnitGenerator;
 	UProcedualSplineDirector* ProcedualSplineDirector;
+	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
 };
