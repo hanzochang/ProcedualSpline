@@ -3,7 +3,8 @@
 #include "ProcedualSpline.h"
 #include "ProcedualSplineDirector.h"
 
-void UProcedualSplineDirector::Initialize(UProcedualSplinePointBuilder *ProcedualSplinePointBuilder)
+void UProcedualSplineDirector::Initialize(FProcedualSplineEntity &Entity,
+	UProcedualSplinePointBuilder *ProcedualSplinePointBuilder)
 {
-	ProcedualSplinePointBuilder->Init();
+	//ProcedualSplinePointBuilder->Initialize(Entity);
 }

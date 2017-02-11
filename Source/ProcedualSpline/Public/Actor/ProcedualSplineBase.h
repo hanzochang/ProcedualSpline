@@ -5,6 +5,7 @@
 #include "GameFramework/Actor.h"
 #include "SplineUnit.h"
 #include "SplineUnitGenerator.h"
+#include "ProcedualSplineEntity.h"
 #include "ProcedualSplineDirector.h"
 #include "ProcedualSplinePointBuilder.h"
 #include "Components/SplineComponent.h"
@@ -32,6 +33,7 @@ public:
 	UStaticMeshComponent* StaticMesh;
 
 	TArray<FSplineUnit> SplineUnits;
+	FProcedualSplineEntity ProcedualSplineEntity;
 
 	USplineUnitGenerator* SplineUnitGenerator;
 	UProcedualSplineDirector* ProcedualSplineDirector;

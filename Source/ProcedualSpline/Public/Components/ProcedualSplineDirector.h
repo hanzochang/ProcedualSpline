@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Components/PrimitiveComponent.h"
+#include "ProcedualSplineEntity.h"
 #include "ProcedualSplinePointBuilder.h"
 #include "ProcedualSplineDirector.generated.h"
 
@@ -18,6 +19,7 @@ public:
 	UProcedualSplinePointBuilder *ProcedualSplinePointBuilder;
 
 public:
-	void Initialize(UProcedualSplinePointBuilder *ProcedualSplinePointBuilder);
+	void Initialize(FProcedualSplineEntity &Entity,
+		            UProcedualSplinePointBuilder *ProcedualSplinePointBuilder);
 	
 };

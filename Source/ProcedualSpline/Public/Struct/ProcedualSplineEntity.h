@@ -13,6 +13,9 @@ struct FProcedualSplineEntity
     GENERATED_BODY()
 
 public:
+	FProcedualSplineEntity(int32 UnitLimit = 1);
+	FString ToDebugString();
+
 	float TotalSplineUnitLength;
 	float CurrentSplineUnitLength;
 	int32 CurrentToSplineUnitNum;
