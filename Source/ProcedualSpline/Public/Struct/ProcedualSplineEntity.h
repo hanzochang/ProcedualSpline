@@ -16,6 +16,8 @@ public:
 	FProcedualSplineEntity(int32 UnitLimit = 1);
 	FString ToDebugString();
 
+	TArray<TArray<AActor*>> SpawnActors;
+
 	float TotalSplineUnitLength;
 	float CurrentSplineUnitLength;
 	int32 CurrentToSplineUnitNum;
