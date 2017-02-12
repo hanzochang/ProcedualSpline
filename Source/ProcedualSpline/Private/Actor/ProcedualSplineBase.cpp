@@ -16,9 +16,12 @@ AProcedualSplineBase::AProcedualSplineBase()
 
     ProcedualSplineDirector = CreateDefaultSubobject<UProcedualSplineDirector>(FName("SplineDirector"));
     ProcedualSplinePointBuilder = CreateDefaultSubobject<UProcedualSplinePointBuilder>(FName("SplinePointBuilder"));
+    ProcedualSplineActorsBuilder = CreateDefaultSubobject<UProcedualSplineActorsBuilder>(FName("SplineActorsBuilder"));
 	ProcedualSplineEntity = FProcedualSplineEntity(2);
 
 	SplineUnits = SplineUnitGenerator->GenerateSplineUnits("splinetest.json");
+
+	LoadDebugGrid();
 
 	Init();
 }
@@ -33,5 +36,43 @@ void AProcedualSplineBase::BeginPlay()
 	Super::BeginPlay();
 	//ProcedualSplineDirector->Initialize(ProcedualSplineEntity, ProcedualSplinePointBuilder);
 	ProcedualSplinePointBuilder->Initialize(ProcedualSplineEntity, Spline, SplineUnits);
+
+	// ‚±‚±‚ÌŠi”[‚Å—Ž‚¿‚Ä‚éL‚¢‚È
+	ProcedualSplineActorsBuilder->Initialize();
+
+	//static ConstructorHelpers::FObjectFinder<UBlueprint> DebugGridClassFinder( TEXT( "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'" ) );
+
+	//if (DebugGridClassFinder.Succeeded())
+	//{
+	//	WhatToSpawn = (UClass*)DebugGridClassFinder.Object->GeneratedClass;
+	//}
+
+	//for (auto i = 0 ; i < Spline->GetNumberOfSplinePoints(); i++) {
+	//	SetDebugGridsEachSplinePoints(i);
+	//}
 	
 }
+
+//void AProcedualSplineBase::LoadDebugGrid()
+//{
+//	static ConstructorHelpers::FObjectFinder<UBlueprint> DebugGridClassFinder( TEXT( "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'" ) );
+//
+//	if (DebugGridClassFinder.Succeeded())
+//	{
+//		WhatToSpawn = (UClass*)DebugGridClassFinder.Object->GeneratedClass;
+//	}
+//}
+//
+//void AProcedualSplineBase::SetDebugGridsEachSplinePoints(int PointNum)
+//{
+//	FVector Location = { 0.0, 0.0, 0.0 };
+//	FRotator Rotation = { 0.0, 0.0, 0.0 };
+//	FActorSpawnParameters SpawnParams;
+//	SpawnParams.Owner = this;
+//	AActor* const SpawningObject = GetWorld()->SpawnActor<AActor>(WhatToSpawn,
+//		Spline->GetLocationAtSplinePoint(PointNum, ESplineCoordinateSpace::Type::Local), 
+//		Spline->GetRotationAtSplinePoint(PointNum, ESplineCoordinateSpace::Type::Local),
+//		SpawnParams);
+//
+//	SpawningObject->Destroy();
+//}

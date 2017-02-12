@@ -8,6 +8,7 @@
 #include "ProcedualSplineEntity.h"
 #include "ProcedualSplineDirector.h"
 #include "ProcedualSplinePointBuilder.h"
+#include "ProcedualSplineActorsBuilder.h"
 #include "Components/SplineComponent.h"
 #include "ProcedualSplineBase.generated.h"
 
@@ -26,6 +27,13 @@ public:
 	// initialize procedure
 	void Init();
 
+	// Ç±ÇÍÇÁÇÕÇ†Ç∆Ç≈BuilderÇ…à⁄çs
+	void LoadDebugGrid();
+	UPROPERTY(EditAnywhere, Category = General)
+    TSubclassOf<class AActor> WhatToSpawn;
+	void SetDebugGridsEachSplinePoints(int PointNum);
+	// Ç±ÇÍÇÁÇÕÇ±Ç±Ç‹Ç≈BuilderÇ…à⁄çs
+
 	UPROPERTY(VisibleAnyWhere)
 	USplineComponent* Spline;
 
@@ -38,4 +46,5 @@ public:
 	USplineUnitGenerator* SplineUnitGenerator;
 	UProcedualSplineDirector* ProcedualSplineDirector;
 	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
+	UProcedualSplineActorsBuilder* ProcedualSplineActorsBuilder;
 };
