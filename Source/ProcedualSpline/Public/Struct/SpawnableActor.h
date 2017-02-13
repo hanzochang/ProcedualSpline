@@ -16,5 +16,16 @@ struct FSpawnableActor
 	GENERATED_BODY()
 
 public:
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+    ESpawnableActorPlacementType PlacementType;
+
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+    TSubclassOf<class AActor> WhatToSpawn;
+
+public:
+	static FSpawnableActor GenerateSpawnableActor(
+		ESpawnableActorPlacementType PlacementType,
+		TSubclassOf<class AActor> WhatToSpawn
+	);
 
 };
