@@ -3,8 +3,10 @@
 #include "ProcedualSpline.h"
 #include "ProcedualSplineActorsBuilder.h"
 
-void UProcedualSplineActorsBuilder::Initialize()
+void UProcedualSplineActorsBuilder::Initialize(USplineComponent* OwnerSpline)
 {
+	Owner = GetOwner();
+	Spline = OwnerSpline;
 }
 
 void UProcedualSplineActorsBuilder::LoadDebugGrid()
@@ -22,15 +24,23 @@ void UProcedualSplineActorsBuilder::SetDebugGridsEachSplinePoints(
 	int PointNum
 )
 {
-	FVector Location = { 0.0, 0.0, 0.0 };
-	FRotator Rotation = { 0.0, 0.0, 0.0 };
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = Owner;
-	AActor* const SpawningObject = GetWorld()->SpawnActor<AActor>(WhatToSpawn,
-		Spline->GetLocationAtSplinePoint(PointNum, ESplineCoordinateSpace::Type::Local), 
-		Spline->GetRotationAtSplinePoint(PointNum, ESplineCoordinateSpace::Type::Local),
-		SpawnParams);
+	if (Owner && Spline) {
+		FVector Location = { 0.0, 0.0, 0.0 };
+		FRotator Rotation = { 0.0, 0.0, 0.0 };
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.Owner = Owner;
+		AActor* const SpawningObject = GetWorld()->SpawnActor<AActor>(WhatToSpawn,
+			Spline->GetLocationAtSplinePoint(PointNum, ESplineCoordinateSpace::Type::Local), 
+			Spline->GetRotationAtSplinePoint(PointNum, ESplineCoordinateSpace::Type::Local),
+			SpawnParams);
 
-	SpawningObject->Destroy();
+	}
+	else {
+		if (GEngine) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("UProedualSplineActorsBuilder aren't initialized"));
+		}
+	}
+
+	//SpawningObject->Destroy();
 
 }

@@ -23,7 +23,7 @@ public:
 	USplineComponent* Spline;
 
 public:
-	void Initialize();
+	void Initialize(USplineComponent* OwnerSpline);
 	void LoadDebugGrid();
 	void SetDebugGridsEachSplinePoints(TSubclassOf<class AActor> WhatToSpawn, int PointNum);
 	

@@ -7,7 +7,6 @@
 // Sets default values
 AProcedualSplineBase::AProcedualSplineBase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	SetRootComponent(CreateDefaultSubobject<UStaticMeshComponent>(FName("SM")));
 
@@ -16,9 +15,16 @@ AProcedualSplineBase::AProcedualSplineBase()
 
     ProcedualSplineDirector = CreateDefaultSubobject<UProcedualSplineDirector>(FName("SplineDirector"));
     ProcedualSplinePointBuilder = CreateDefaultSubobject<UProcedualSplinePointBuilder>(FName("SplinePointBuilder"));
+    ProcedualSplineActorsBuilder = CreateDefaultSubobject<UProcedualSplineActorsBuilder>(FName("SplineActorsBuilder"));
 	ProcedualSplineEntity = FProcedualSplineEntity(2);
 
 	SplineUnits = SplineUnitGenerator->GenerateSplineUnits("splinetest.json");
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint> DebugGridClassFinder( TEXT( "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'" ) );
+	if (DebugGridClassFinder.Succeeded())
+	{
+		WhatToSpawn = (UClass*)DebugGridClassFinder.Object->GeneratedClass;
+	}
 
 	Init();
 }
@@ -33,5 +39,10 @@ void AProcedualSplineBase::BeginPlay()
 	Super::BeginPlay();
 	//ProcedualSplineDirector->Initialize(ProcedualSplineEntity, ProcedualSplinePointBuilder);
 	ProcedualSplinePointBuilder->Initialize(ProcedualSplineEntity, Spline, SplineUnits);
-	
+	ProcedualSplineActorsBuilder->Initialize(Spline);
+
+	for (auto i = 0; i < Spline->GetNumberOfSplinePoints(); i++) {
+		ProcedualSplineActorsBuilder->SetDebugGridsEachSplinePoints(WhatToSpawn, i);
+	}
+
 }
