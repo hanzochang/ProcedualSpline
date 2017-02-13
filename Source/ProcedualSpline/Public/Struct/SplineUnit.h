@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "SpawnableActor.h"
 #include "SplineUnit.generated.h"
 
 /**
@@ -50,6 +51,9 @@ public:
     
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
     int32 Density;
+
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+    TArray<FSpawnableActor> SpawnableActors;
 
 public:
 	static FSplineUnit GenerateSplineUnit(
