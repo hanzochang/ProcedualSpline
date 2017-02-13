@@ -54,6 +54,9 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 		int32 Density = json->GetNumberField(TEXT("Density"));
 		float Msec = json->GetNumberField(TEXT("Msec"));
 
+		TArray<FSpawnableActor> SpawnableActors;
+
+
 		FSplineUnit SplineUnit = FSplineUnit::GenerateSplineUnit(
 			WaveType,
 			Distance,
@@ -69,6 +72,7 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 	}
 }
 
+// これは構造体でやる仕事
 ESplineUnit USplineUnitGenerator::ParseWaveType(TSharedPtr<FJsonObject> json)
 {
 	FString WaveTypeStr = json->GetStringField(TEXT("WaveType"));
@@ -122,4 +126,33 @@ FString USplineUnitGenerator::JsonFullPath(FString Path)
 	FFileHelper::LoadFileToString(JsonStr, *FullPath);
 
 	return JsonStr;
+}
+
+TArray<FSpawnableActor> USplineUnitGenerator::ParseSpawnableActors(TSharedPtr<FJsonObject> json)
+{
+	TArray<FSpawnableActor> SpawnableActors;
+	TArray<TSharedPtr<FJsonValue>> childArray = json->GetArrayField(TEXT("SpawnableActors"));
+	if (childArray.Num() > 0)
+	{
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Go")); }
+		for (int32 i = 0; i < childArray.Num(); i++) {
+			TSharedPtr<FJsonValue> childValue = childArray[i];
+			TSharedPtr<FJsonObject> childJson = childValue->AsObject();
+
+			FString ActorsReference = childJson->GetStringField(TEXT("ActorsReference"));
+			FString PlacementType = childJson->GetStringField(TEXT("PlacementType"));
+
+			// TODO 次はここを動的にして、内部構造体内部で適宜振り分ける
+			//static ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder("Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'"ActorsReference);
+			static ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder( TEXT("Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'"));
+			if (ActorFinder.Succeeded())
+			{
+				TSubclassOf<class AActor> WhatToSpawn = (UClass*)ActorFinder.Object->GeneratedClass;
+				FSpawnableActor SpawnableActor = FSpawnableActor::GenerateSpawnableActor(ESpawnableActorPlacementType::EACH_POINT, WhatToSpawn);
+				SpawnableActors.Push(SpawnableActor);
+			}
+		}
+	}
+
+	return SpawnableActors;
 }

@@ -7,7 +7,13 @@
       "VertexVector": [0, 0, 0],
       "WaveCycleCount": 2,
       "Density": 10,
-      "Msec": 10
+      "Msec": 10,
+      "SpawnableActors": [
+        {
+          "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'",
+          "PlacementType": "EACH_POINT"
+        }
+      ]
     },
     {
       "WaveType": "WAVE_SIN",

@@ -4,6 +4,7 @@
 
 #include "Components/ActorComponent.h"
 #include "SplineUnit.h"
+#include "SpawnableActor.h"
 #include "SplineUnitGenerator.generated.h"
 
 
@@ -23,4 +24,5 @@ private:
 	FVector ParseDistance(TSharedPtr<FJsonObject> json);
 	FVector ParseVertexVector(TSharedPtr<FJsonObject> json);
 	FString JsonFullPath(FString Path);
+	TArray<FSpawnableActor> USplineUnitGenerator::ParseSpawnableActors(TSharedPtr<FJsonObject> json);
 };
