@@ -53,9 +53,7 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 		float WaveCycleCount = json->GetNumberField(TEXT("WaveCycleCount"));
 		int32 Density = json->GetNumberField(TEXT("Density"));
 		float Msec = json->GetNumberField(TEXT("Msec"));
-
-		TArray<FSpawnableActor> SpawnableActors;
-
+		TArray<FSpawnableActor> SpawnableActors = ParseSpawnableActors(json);
 
 		FSplineUnit SplineUnit = FSplineUnit::GenerateSplineUnit(
 			WaveType,
@@ -64,7 +62,8 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 			VertexVector,
 			WaveCycleCount,
 			Density,
-			Msec
+			Msec,
+			SpawnableActors
 		);
 
 		PrevEndPoint = SplineUnit.StartLocation + SplineUnit.Distance;
@@ -142,15 +141,8 @@ TArray<FSpawnableActor> USplineUnitGenerator::ParseSpawnableActors(TSharedPtr<FJ
 			FString ActorsReference = childJson->GetStringField(TEXT("ActorsReference"));
 			FString PlacementType = childJson->GetStringField(TEXT("PlacementType"));
 
-			// TODO 次はここを動的にして、内部構造体内部で適宜振り分ける
-			//static ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder("Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'"ActorsReference);
-			static ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder( TEXT("Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'"));
-			if (ActorFinder.Succeeded())
-			{
-				TSubclassOf<class AActor> WhatToSpawn = (UClass*)ActorFinder.Object->GeneratedClass;
-				FSpawnableActor SpawnableActor = FSpawnableActor::GenerateSpawnableActor(ESpawnableActorPlacementType::EACH_POINT, WhatToSpawn);
-				SpawnableActors.Push(SpawnableActor);
-			}
+			FSpawnableActor SpawnableActor = FSpawnableActor::GenerateSpawnableActor(PlacementType, ActorsReference);
+			SpawnableActors.Push(SpawnableActor);
 		}
 	}
 

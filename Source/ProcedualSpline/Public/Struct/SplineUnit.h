@@ -63,7 +63,8 @@ public:
 		FVector VertexVector,
 		float WaveCycleCount,
 		int32 Density,
-	    float Msec
+	    float Msec,
+		TArray<FSpawnableActor> SpawnableActors
 		);
 
 public:

@@ -28,4 +28,12 @@ public:
 		TSubclassOf<class AActor> WhatToSpawn
 	);
 
+	static FSpawnableActor GenerateSpawnableActor(
+		FString PlacementType,
+		FString WhatToSpawn
+	);
+
+	void AssignPlacementType(FString Str);
+	void AssignWhatToSpawn(FString Str);
+
 };

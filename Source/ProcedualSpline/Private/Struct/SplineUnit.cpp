@@ -50,7 +50,8 @@ FSplineUnit FSplineUnit::GenerateSplineUnit(
 		FVector VertexVector,
 		float WaveCycleCount,
 		int32 Density,
-	    float Msec
+	    float Msec,
+		TArray<FSpawnableActor> SpawnableActors
 )
 {
 	FSplineUnit SplineUnit;
@@ -61,6 +62,7 @@ FSplineUnit FSplineUnit::GenerateSplineUnit(
 	SplineUnit.Density = Density;
 	SplineUnit.Distance = Distance;
 	SplineUnit.StartLocation = StartLocation;
+	SplineUnit.SpawnableActors = SpawnableActors;
 
 	return SplineUnit;
 }
