@@ -39,9 +39,10 @@ void AProcedualSplineBase::BeginPlay()
 	//ProcedualSplineDirector->Initialize(ProcedualSplineEntity, ProcedualSplinePointBuilder);
 	ProcedualSplinePointBuilder->Initialize(ProcedualSplineEntity, Spline, SplineUnits);
 	ProcedualSplineActorsBuilder->Initialize(Spline);
+	ProcedualSplineActorsBuilder->SpawnActors(SplineUnits, 1);
 
-	for (auto i = 0; i < Spline->GetNumberOfSplinePoints(); i++) {
-		ProcedualSplineActorsBuilder->SetDebugGridsEachSplinePoints(WhatToSpawn, i);
-	}
+	//for (auto i = 0; i < Spline->GetNumberOfSplinePoints(); i++) {
+	//	ProcedualSplineActorsBuilder->SetDebugGridsEachSplinePoints(WhatToSpawn, i);
+	//}
 
 }

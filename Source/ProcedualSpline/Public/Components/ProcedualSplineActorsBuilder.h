@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "SplineUnit.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/SplineComponent.h"
 #include "ProcedualSplineActorsBuilder.generated.h"
@@ -26,5 +27,6 @@ public:
 	void Initialize(USplineComponent* OwnerSpline);
 	void LoadDebugGrid();
 	void SetDebugGridsEachSplinePoints(TSubclassOf<class AActor> WhatToSpawn, int PointNum);
+	void SpawnActors(TArray<FSplineUnit> &SplineUnits, int PointNum);
 	
 };
