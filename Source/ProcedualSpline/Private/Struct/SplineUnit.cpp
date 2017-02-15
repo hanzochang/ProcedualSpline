@@ -68,31 +68,33 @@ FSplineUnit FSplineUnit::GenerateSplineUnit(
 }
 
 // SplineUnitをPointsポインタにSplineUnitの状態に応じてセットする
-void FSplineUnit::DeriveSplinePointsAddTo(TArray<FVector> &Points, FVector PrevPoint,
+TArray<FVector> FSplineUnit::DeriveSplinePointsAddTo(FVector PrevPoint,
 	                                      FVector PrevDirection, FRotator PrevRotation)
 {
+	TArray<FVector> Points;
 
 	switch (WaveType)
 	{
 	case ESplineUnit::WAVE_LINEAR:
-		DeriveWaveLinearPoints(Points, PrevPoint, PrevDirection, PrevRotation);
+		Points = DeriveWaveLinearPoints(PrevPoint, PrevDirection, PrevRotation);
 		break;
 	case ESplineUnit::WAVE_SIN:
-		DeriveWaveSinPoints(Points, PrevPoint, PrevDirection, PrevRotation);
+		Points = DeriveWaveSinPoints(PrevPoint, PrevDirection, PrevRotation);
 		break;
 	case ESplineUnit::WAVE_TRIANGLE:
-		DeriveWaveTrianglePoints(Points, PrevPoint);
+		Points = DeriveWaveTrianglePoints(PrevPoint);
 		break;
 	case ESplineUnit::WAVE_SAWTOOTH:
 		break;
 	}
+
+	return Points;
 }
 
-void FSplineUnit::DeriveWaveLinearPoints(TArray<FVector> &Points,
-	                                     FVector PrevPoint,
-										 FVector PrevDirection,
-										 FRotator PrevRotation)
+TArray<FVector> FSplineUnit::DeriveWaveLinearPoints(FVector PrevPoint, FVector PrevDirection, FRotator PrevRotation)
 {
+	TArray<FVector> Points;
+
 	FVector PrevDirectionVertical = FRotator{ 90, 0, 0 }.RotateVector(PrevDirection);
 	PrevDirectionVertical = FVector{ 0, 0, PrevDirectionVertical.Z };
 	FQuat quat = FQuat{ PrevDirectionVertical, FMath::DegreesToRadians(PrevRotation.Yaw) };
@@ -103,22 +105,26 @@ void FSplineUnit::DeriveWaveLinearPoints(TArray<FVector> &Points,
 		//FVector NextPoint = quat.RotateVector(BetweenPoints());
 		//Points.Push(PrevPoint + NextPoint * i);
 	}
+
+	return Points;
 }
 
-void FSplineUnit::DeriveWaveSinPoints(TArray<FVector> &Points,
-									  FVector PrevPoint,
-									  FVector PrevDirection,
-									  FRotator PrevRotation)
+TArray<FVector> FSplineUnit::DeriveWaveSinPoints(FVector PrevPoint, FVector PrevDirection, FRotator PrevRotation)
 {
+	TArray<FVector> Points;
+
 	for (auto i = 0; i < Density; i++)
 	{
 		float VertexBase = FMath::Sin(PI / Density * i * WaveCycleCount);
 		Points.Push(PrevPoint + BetweenPoints() * i + (VertexVector * VertexBase));
 	}
+
+	return Points;
 }
 
-void FSplineUnit::DeriveWaveTrianglePoints(TArray<FVector> &Points, FVector PrevPoint)
+TArray<FVector> FSplineUnit::DeriveWaveTrianglePoints(FVector PrevPoint)
 {
+	TArray<FVector> Points;
 	float Quater = Density / WaveCycleCount;
 
 	for (auto i = 0; i < Density; i++)
@@ -158,4 +164,6 @@ void FSplineUnit::DeriveWaveTrianglePoints(TArray<FVector> &Points, FVector Prev
 		}
 		
 	}
+
+	return Points;
 }

@@ -20,13 +20,9 @@ public:
     //TSubclassOf<class AActor> WhatToSpawn;
 
 	AActor* Owner;
-
 	USplineComponent* Spline;
 
 public:
 	void Initialize(USplineComponent* OwnerSpline);
-	void LoadDebugGrid();
-	void SetDebugGridsEachSplinePoints(TSubclassOf<class AActor> WhatToSpawn, int PointNum);
 	void SpawnActors(TArray<FSplineUnit> &SplineUnits, int PointNum);
-	
 };

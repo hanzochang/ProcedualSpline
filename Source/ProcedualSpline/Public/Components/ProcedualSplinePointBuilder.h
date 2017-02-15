@@ -15,38 +15,16 @@ UCLASS()
 class PROCEDUALSPLINE_API UProcedualSplinePointBuilder : public UPrimitiveComponent
 {
 	GENERATED_BODY()
+
+public:
+	USplineComponent* Spline;
 	
 public:
 	//void Init(USplineComponent *Spline, TArray<FSplineUnit> &SplineUnits);
 	void Initialize(FProcedualSplineEntity &Entity,
-		USplineComponent *Spline,
+		USplineComponent *SplineComponent,
 		TArray<FSplineUnit> &SplineUnits);
 
-	void AssignSplinePointsFromSplineUnit(USplineComponent *Spline,
-		TArray<FVector> &SplinePoints,
-		TArray<FSplineUnit> &SplineUnits);
-
-private:
-
-	void AssignSplinePoints(USplineComponent *Spline,
-		TArray<FVector> &SplinePoints,
-		TArray<FSplineUnit> &SplineUnits,
-		int32 counter,
-		FVector &StartPoint
-	);
-
-	float GetCurrentSplineUnitLength(
-		USplineComponent *Spline,
-		int32 PointStartNumber,
-		int32 PointEndNumber
-	);
-
-	float GetGeneratedSplineLength(
-		FProcedualSplineEntity &Entity,
-		USplineComponent *Spline,
-		int32 EdgeSplineUnitStartSplineNum
-	);
-
-	void SetDisplayableSplineUnitLength(FProcedualSplineEntity &Entity);
+	void AssignPointsToSpline(FProcedualSplineEntity &Entity, TArray<FSplineUnit> &SplineUnits);
 
 };

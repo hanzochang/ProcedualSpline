@@ -38,6 +38,7 @@ void AProcedualSplineBase::BeginPlay()
 	Super::BeginPlay();
 	//ProcedualSplineDirector->Initialize(ProcedualSplineEntity, ProcedualSplinePointBuilder);
 	ProcedualSplinePointBuilder->Initialize(ProcedualSplineEntity, Spline, SplineUnits);
+	ProcedualSplinePointBuilder->AssignPointsToSpline(ProcedualSplineEntity, SplineUnits);
 	ProcedualSplineActorsBuilder->Initialize(Spline);
 	ProcedualSplineActorsBuilder->SpawnActors(SplineUnits, 1);
 
