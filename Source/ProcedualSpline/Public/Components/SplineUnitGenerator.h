@@ -21,8 +21,7 @@ private:
 	void ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &SplineUnits, TSharedPtr<FJsonObject> JsonObject);
 
 	ESplineUnit ParseWaveType(TSharedPtr<FJsonObject> json);
-	FVector ParseDistance(TSharedPtr<FJsonObject> json);
-	FVector ParseVertexVector(TSharedPtr<FJsonObject> json);
+	FVector ParseAsVector(TSharedPtr<FJsonObject> json, FString KeyName);
 	FString JsonFullPath(FString Path);
 	TArray<FSpawnableActor> USplineUnitGenerator::ParseSpawnableActors(TSharedPtr<FJsonObject> json);
 };

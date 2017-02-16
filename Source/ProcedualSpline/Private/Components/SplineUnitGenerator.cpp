@@ -48,25 +48,30 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 		TSharedPtr<FJsonObject> json = value->AsObject();
 
 		ESplineUnit WaveType = ParseWaveType(json);
-		FVector Distance = ParseDistance(json);
-		FVector VertexVector = ParseVertexVector(json);
-		float WaveCycleCount = json->GetNumberField(TEXT("WaveCycleCount"));
+		FVector UnitVector = ParseAsVector(json, FString("UnitVector"));
+		float Scalar = json->GetNumberField(TEXT("Scalar"));
 		int32 Density = json->GetNumberField(TEXT("Density"));
-		float Msec = json->GetNumberField(TEXT("Msec"));
+		FVector CurveUnitVector = ParseAsVector(json, FString("CurveUnitVector"));
+		float CurveScalar = json->GetNumberField(TEXT("CurveScalar"));
+		float WaveFreq = json->GetNumberField(TEXT("WaveFreq"));
+		float Msec = json->GetNumberField(TEXT("WaveFreq"));
+		int32 loop = json->GetNumberField(TEXT("loop"));
 		TArray<FSpawnableActor> SpawnableActors = ParseSpawnableActors(json);
 
 		FSplineUnit SplineUnit = FSplineUnit::GenerateSplineUnit(
 			WaveType,
-			Distance,
-			PrevEndPoint,
-			VertexVector,
-			WaveCycleCount,
+			UnitVector,
+			Scalar,
 			Density,
+			CurveUnitVector,
+			CurveScalar,
+			WaveFreq,
 			Msec,
+			loop,
 			SpawnableActors
 		);
 
-		PrevEndPoint = SplineUnit.StartLocation + SplineUnit.Distance;
+		//PrevEndPoint = SplineUnit.StartLocation + SplineUnit.Distance;
 		SplineUnits.Push(SplineUnit);
 	}
 }
@@ -97,24 +102,14 @@ ESplineUnit USplineUnitGenerator::ParseWaveType(TSharedPtr<FJsonObject> json)
 	return WaveType;
 }
 
-FVector USplineUnitGenerator::ParseDistance(TSharedPtr<FJsonObject> json)
+FVector USplineUnitGenerator::ParseAsVector(TSharedPtr<FJsonObject> json, FString KeyName)
 {
-	TArray<FString> DistanceJson;
-	json->TryGetStringArrayField(TEXT("Distance"), DistanceJson);
-	FVector Distance = FVector{ FCString::Atof(*DistanceJson[0]),
-								FCString::Atof(*DistanceJson[1]),
-								FCString::Atof(*DistanceJson[2]) };
-	return Distance;
-}
-
-FVector USplineUnitGenerator::ParseVertexVector(TSharedPtr<FJsonObject> json)
-{
-	TArray<FString> VertexVectorJson;
-	json->TryGetStringArrayField(TEXT("VertexVector"), VertexVectorJson);
-	FVector VertexVector = FVector{ FCString::Atof(*VertexVectorJson[0]),
-									FCString::Atof(*VertexVectorJson[1]), 
-									FCString::Atof(*VertexVectorJson[2]) };
-	return VertexVector;
+	TArray<FString> ArrayJson;
+	json->TryGetStringArrayField(*KeyName, ArrayJson);
+	FVector Vector = FVector{ FCString::Atof(*ArrayJson[0]),
+							  FCString::Atof(*ArrayJson[1]),
+							  FCString::Atof(*ArrayJson[2]) };
+	return Vector;
 }
 
 FString USplineUnitGenerator::JsonFullPath(FString Path)

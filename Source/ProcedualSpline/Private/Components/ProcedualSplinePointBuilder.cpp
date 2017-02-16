@@ -25,11 +25,11 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::FromInt(counter)); }
 		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, SplineUnits[counter].ToDebugString()); }
 
-		SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint);
-		for (FVector SplinePoint : SplinePoints) {
-			Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
-		}
-		StartPoint = Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Local);
+		//SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint);
+		//for (FVector SplinePoint : SplinePoints) {
+		//	Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
+		//}
+		//StartPoint = Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Local);
 	}
 }
 
