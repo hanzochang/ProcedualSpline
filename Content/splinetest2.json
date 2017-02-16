@@ -1,0 +1,22 @@
+{
+  "SplineUnits":
+  [
+    {
+      "WaveType": "WAVE_LINEAR",
+      "UnitVector": [0,0,0],
+      "Scalar": 100.0,
+      "Density": 10,
+      "CurveUnitVector": [0,0,0],
+      "CurveScalar": 10,
+      "WaveFreq": 2,
+      "Msec": 10,
+      "loop": 10,
+      "SpawnableActors": [
+        {
+          "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'",
+          "PlacementType": "EACH_POINT"
+        }
+      ]
+    },
+  ]
+}
