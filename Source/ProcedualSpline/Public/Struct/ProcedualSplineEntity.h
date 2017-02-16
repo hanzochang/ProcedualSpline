@@ -27,9 +27,9 @@ public:
 	int32 DisplayableSplineUnitLimit;
 	float DisplayableSplineUnitLength;
 
-    // 同時表示可能なSplineUnitの数
+    // 現在のSplineUnitからの同時表示可能なバッファ数を規定
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
-	int32 DisplayableSplineUnitNumber;
+	int32 DisplayableSplineUnitBuffer;
 
     // 現在表示を許可されている先頭のSplineUnitの数
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
@@ -46,5 +46,9 @@ public:
     // 戻る場合のPointBuilder/AssetsBuilderの起動ポイント
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
 	float RearRefreshSplineLength;
+
+public:
+	// 同時表示可能なSplineUnitの数合計値
+	int32 DisplayableSplineUnitSum();
 
 };

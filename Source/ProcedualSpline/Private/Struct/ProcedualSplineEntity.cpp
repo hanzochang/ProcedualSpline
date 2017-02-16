@@ -14,7 +14,7 @@ FProcedualSplineEntity::FProcedualSplineEntity(int32 UnitLimit)
 	DisplayableSplineUnitLimit = 0;
 	DisplayableSplineUnitLimit = UnitLimit;
 
-	DisplayableSplineUnitNumber = UnitLimit;
+	DisplayableSplineUnitBuffer = UnitLimit;
 	TopmostSplineUnitNumber = 0;
 	RearmostSplineUnitNumber = 0;
 	TopRefreshSplineLength = 0;
@@ -25,11 +25,16 @@ FString FProcedualSplineEntity::ToDebugString()
 {
 	FString Result;
 	Result =
-		"DisplayableSplineUnitNumber: " + FString::FromInt(DisplayableSplineUnitNumber) + "  |   " +
+		"DisplayableSplineUnitBuffer: " + FString::FromInt(DisplayableSplineUnitBuffer) + "  |   " +
 		"TopmostSplineUnitNumber: " + FString::FromInt(TopmostSplineUnitNumber) + "  |   " +
 		"RearmostSplineUnitNumber: " + FString::FromInt(RearmostSplineUnitNumber) + "  |   " +
 		"TopRefreshSplineLength: " + FString::SanitizeFloat(TopRefreshSplineLength) + "  |   " +
 		"RearRefreshSplineLength: " + FString::SanitizeFloat(RearRefreshSplineLength);
 
 	return Result;
+}
+
+int32 FProcedualSplineEntity::DisplayableSplineUnitSum()
+{
+	return (DisplayableSplineUnitBuffer * 2) + 1;
 }

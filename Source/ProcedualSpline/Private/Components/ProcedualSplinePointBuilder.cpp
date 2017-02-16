@@ -18,18 +18,17 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 	TArray<FVector> SplinePoints;
 	FVector StartPoint = FVector{ 0,0,0 }; //これはガン、SplineStructのほうにいれる
 
-	// DisplayableSplineUnitLimitはEntityからとる
-	for (auto i = 0; i < Entity.DisplayableSplineUnitLimit; i++)
+	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
 	{
 		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
-		counter += i;
-		if (counter >= SplineUnits.Num()) { counter = 0; }
-		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::FromInt(counter)); }
-		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, SplineUnits[counter].ToDebugString()); }
+		counter = i % SplineUnits.Num();
+		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::FromInt(counter)); }
+		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, SplineUnits[counter].ToDebugString()); }
 
-		// TODO ここがなぜPointsが+=でないといけないかを確認する
-		SplinePoints += SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint);
-		Spline->SetSplinePoints(SplinePoints, ESplineCoordinateSpace::Type::Local);
+		SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint);
+		for (FVector SplinePoint : SplinePoints) {
+			Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
+		}
 		StartPoint = Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Local);
 	}
 }
