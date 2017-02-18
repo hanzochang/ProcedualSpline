@@ -29,133 +29,131 @@ FString FSplineUnit::ToDebugString()
 {
 	FString Result;
 	Result =
-		"Distance: " + Distance.ToString() + "  |   "  +
-		"Density: " + FString::FromInt(Density) + "  |   " + 
-		"VertexVector: " + VertexVector.ToString() + "  |   " + 
-		"Msec: " + FString::SanitizeFloat(Msec);
+		"UnitRotator: " + UnitRotator.ToString() + "  |   " +
+		"InheritRotatorPitch: " + (InheritRotatorPitch ? "true" : "false" ) + "  |   " +
+		"InheritRotatorYaw: " + (InheritRotatorYaw ? "true" : "false" ) + "  |   " +
+		"InheritRotatorInRoll: " + (InheritRotatorInRoll ? "true" : "false" ) + "  |   " +
+		"Scalar: " + FString::SanitizeFloat(Scalar) + "  |   " +
+		"Density" + FString::FromInt(Density) + "  |   " +
+		"CurveUnitRotator: " + CurveUnitRotator.ToString() + "  |   " +
+		"CurveScalar: " + FString::SanitizeFloat(CurveScalar) + "  |   " +
+		"WaveFreq: " + FString::FromInt(WaveFreq) + "  |   " +
+		"Msec: " + FString::SanitizeFloat(Msec) + "  |   " +
+		"loop: " + FString::FromInt(loop);
+		//"WaveType: " + WaveType
+		//"SpawnableActors: " + SpawnableActors
 
 	return Result;
 }
 
-FVector FSplineUnit::BetweenPoints()
+float FSplineUnit::ScalarPerPoint()
 {
-	return Distance / Density;
+	return Scalar / Density;
 }
 
-// Unreal C++内で生成するための疑似コンストラクタ
 FSplineUnit FSplineUnit::GenerateSplineUnit(
 		ESplineUnit WaveType,
-		FVector Distance,
-		FVector StartLocation,
-		FVector VertexVector,
-		float WaveCycleCount,
+		FRotator UnitRotator,
+		bool InheritRotatorPitch,
+		bool InheritRotatorYaw,
+		bool InheritRotatorInRoll,
+		float Scalar,
 		int32 Density,
-	    float Msec,
+		FRotator CurveUnitRotator,
+		float CurveScalar,
+		float WaveFreq,
+		float Msec,
+		int32 loop,
 		TArray<FSpawnableActor> SpawnableActors
 )
 {
 	FSplineUnit SplineUnit;
 	SplineUnit.WaveType = WaveType;
-	SplineUnit.Msec = Msec;
-	SplineUnit.VertexVector = VertexVector;
-	SplineUnit.WaveCycleCount = WaveCycleCount;
+	SplineUnit.UnitRotator = UnitRotator;
+	SplineUnit.InheritRotatorPitch = InheritRotatorPitch;
+	SplineUnit.InheritRotatorYaw = InheritRotatorYaw;
+	SplineUnit.InheritRotatorInRoll = InheritRotatorInRoll;
+	SplineUnit.Scalar = Scalar;
 	SplineUnit.Density = Density;
-	SplineUnit.Distance = Distance;
-	SplineUnit.StartLocation = StartLocation;
+	SplineUnit.CurveUnitRotator = CurveUnitRotator;
+	SplineUnit.CurveScalar = CurveScalar;
+	SplineUnit.WaveFreq = WaveFreq;
+	SplineUnit.Msec = Msec;
+	SplineUnit.loop = loop;
 	SplineUnit.SpawnableActors = SpawnableActors;
 
 	return SplineUnit;
 }
 
-// SplineUnitをPointsポインタにSplineUnitの状態に応じてセットする
-void FSplineUnit::DeriveSplinePointsAddTo(TArray<FVector> &Points, FVector PrevPoint,
+FVector FSplineUnit::UnitVector(FRotator PrevRotation)
+{
+	return (UnitRotator + InheritableRotator(PrevRotation)).Vector();
+}
+
+
+FVector FSplineUnit::CurveUnitVector(FRotator PrevRotation)
+{
+	return (UnitRotator + CurveUnitRotator + InheritableRotator(PrevRotation)).Vector();
+}
+
+TArray<FVector> FSplineUnit::DeriveSplinePointsAddTo(FVector PrevPoint,
 	                                      FVector PrevDirection, FRotator PrevRotation)
 {
+	TArray<FVector> Points;
 
 	switch (WaveType)
 	{
 	case ESplineUnit::WAVE_LINEAR:
-		DeriveWaveLinearPoints(Points, PrevPoint, PrevDirection, PrevRotation);
+		Points = DeriveWaveLinearPoints(PrevPoint, PrevDirection, PrevRotation);
 		break;
 	case ESplineUnit::WAVE_SIN:
-		DeriveWaveSinPoints(Points, PrevPoint, PrevDirection, PrevRotation);
-		break;
-	case ESplineUnit::WAVE_TRIANGLE:
-		DeriveWaveTrianglePoints(Points, PrevPoint);
+		Points = DeriveWaveSinPoints(PrevPoint, PrevDirection, PrevRotation);
 		break;
 	case ESplineUnit::WAVE_SAWTOOTH:
+		// pending
+		Points = DeriveWaveLinearPoints(PrevPoint, PrevDirection, PrevRotation);
 		break;
 	}
+
+	return Points;
 }
 
-void FSplineUnit::DeriveWaveLinearPoints(TArray<FVector> &Points,
-	                                     FVector PrevPoint,
-										 FVector PrevDirection,
-										 FRotator PrevRotation)
+
+/**
+* private
+*/
+
+FRotator FSplineUnit::InheritableRotator(FRotator PrevRotation)
 {
-	FVector PrevDirectionVertical = FRotator{ 90, 0, 0 }.RotateVector(PrevDirection);
-	PrevDirectionVertical = FVector{ 0, 0, PrevDirectionVertical.Z };
-	FQuat quat = FQuat{ PrevDirectionVertical, FMath::DegreesToRadians(PrevRotation.Yaw) };
+	float RotationYaw = InheritRotatorYaw ? PrevRotation.Yaw : 0;
+	float RotationPitch = InheritRotatorPitch ? PrevRotation.Pitch : 0;
+	float RotationInRoll = InheritRotatorInRoll ? PrevRotation.Roll : 0;
+	return FRotator{ RotationPitch, RotationYaw, RotationInRoll };
+}
+
+TArray<FVector> FSplineUnit::DeriveWaveLinearPoints(FVector PrevPoint, FVector PrevDirection, FRotator PrevRotation)
+{
+	TArray<FVector> Points;
 
 	for (auto i = 0; i < Density; i++)
 	{
-		Points.Push(PrevPoint + BetweenPoints() * i);
-		//FVector NextPoint = quat.RotateVector(BetweenPoints());
-		//Points.Push(PrevPoint + NextPoint * i);
+		Points.Push(PrevPoint + (UnitVector(PrevRotation) * ScalarPerPoint() * i));
 	}
+
+	return Points;
 }
 
-void FSplineUnit::DeriveWaveSinPoints(TArray<FVector> &Points,
-									  FVector PrevPoint,
-									  FVector PrevDirection,
-									  FRotator PrevRotation)
+TArray<FVector> FSplineUnit::DeriveWaveSinPoints(FVector PrevPoint, FVector PrevDirection, FRotator PrevRotation)
 {
-	for (auto i = 0; i < Density; i++)
-	{
-		float VertexBase = FMath::Sin(PI / Density * i * WaveCycleCount);
-		Points.Push(PrevPoint + BetweenPoints() * i + (VertexVector * VertexBase));
-	}
-}
-
-void FSplineUnit::DeriveWaveTrianglePoints(TArray<FVector> &Points, FVector PrevPoint)
-{
-	float Quater = Density / WaveCycleCount;
+	TArray<FVector> Points;
+	FVector Uv = UnitVector(PrevRotation);
+	FVector Cuv = CurveUnitVector(PrevRotation);
 
 	for (auto i = 0; i < Density; i++)
 	{
-		// バグあり
-		FVector BasePoint = PrevPoint + BetweenPoints() * i;
-		float NumPerQuater = i / Quater;
-		float NumPerQuaterDecimal = NumPerQuater - FMath::Floor(NumPerQuater);
-		float BranchPoint = FMath::Sin(PI * (i / Quater));
-		float BranchPointPrev = (i != 0 ? FMath::Sin(PI * ((i-1) / Quater)) : 0);
-
-		if (BranchPoint > 0)
-		{
-			if (BranchPoint - BranchPointPrev >= 0)
-			{
-				Points.Push(BasePoint + (VertexVector*2 * (NumPerQuaterDecimal)));
-			}
-			else
-			{
-				Points.Push(BasePoint + (VertexVector*2 - (VertexVector*2 * (NumPerQuaterDecimal))));
-			}
-		}
-		else if (BranchPoint < 0)
-		{
-			if (BranchPoint - BranchPointPrev >= 0)
-			{
-				Points.Push(BasePoint - (VertexVector*2 - (VertexVector*2 * (NumPerQuaterDecimal))));
-			}
-			else
-			{
-				Points.Push(BasePoint - (VertexVector*2 * (NumPerQuaterDecimal)));
-			}
-		}
-		else
-		{
-			Points.Push(BetweenPoints() * i);
-		}
-		
+		float VertexBase = FMath::Sin(PI / Density * i * WaveFreq);
+		Points.Push(PrevPoint + (Uv * ScalarPerPoint() * i) + (Cuv * CurveScalar * VertexBase));
 	}
+
+	return Points;
 }

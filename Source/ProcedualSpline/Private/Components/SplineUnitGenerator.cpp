@@ -48,25 +48,36 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 		TSharedPtr<FJsonObject> json = value->AsObject();
 
 		ESplineUnit WaveType = ParseWaveType(json);
-		FVector Distance = ParseDistance(json);
-		FVector VertexVector = ParseVertexVector(json);
-		float WaveCycleCount = json->GetNumberField(TEXT("WaveCycleCount"));
+		FRotator UnitRotator = ParseAsRotator(json, FString("UnitRotator"));
+		bool InheritRotatorPitch = json->GetBoolField(TEXT("InheritRotatorPitch"));
+		bool InheritRotatorYaw = json->GetBoolField(TEXT("InheritRotatorYaw"));
+		bool InheritRotatorInRoll = json->GetBoolField(TEXT("InheritRotatorInRoll"));
+		float Scalar = json->GetNumberField(TEXT("Scalar"));
 		int32 Density = json->GetNumberField(TEXT("Density"));
-		float Msec = json->GetNumberField(TEXT("Msec"));
+		FRotator CurveUnitRotator = ParseAsRotator(json, FString("CurveUnitRotator"));
+		float CurveScalar = json->GetNumberField(TEXT("CurveScalar"));
+		float WaveFreq = json->GetNumberField(TEXT("WaveFreq"));
+		float Msec = json->GetNumberField(TEXT("WaveFreq"));
+		int32 loop = json->GetNumberField(TEXT("loop"));
 		TArray<FSpawnableActor> SpawnableActors = ParseSpawnableActors(json);
 
 		FSplineUnit SplineUnit = FSplineUnit::GenerateSplineUnit(
 			WaveType,
-			Distance,
-			PrevEndPoint,
-			VertexVector,
-			WaveCycleCount,
+			UnitRotator,
+			InheritRotatorPitch,
+			InheritRotatorYaw,
+			InheritRotatorInRoll,
+			Scalar,
 			Density,
+			CurveUnitRotator,
+			CurveScalar,
+			WaveFreq,
 			Msec,
+			loop,
 			SpawnableActors
 		);
 
-		PrevEndPoint = SplineUnit.StartLocation + SplineUnit.Distance;
+		//PrevEndPoint = SplineUnit.StartLocation + SplineUnit.Distance;
 		SplineUnits.Push(SplineUnit);
 	}
 }
@@ -97,24 +108,24 @@ ESplineUnit USplineUnitGenerator::ParseWaveType(TSharedPtr<FJsonObject> json)
 	return WaveType;
 }
 
-FVector USplineUnitGenerator::ParseDistance(TSharedPtr<FJsonObject> json)
+FVector USplineUnitGenerator::ParseAsVector(TSharedPtr<FJsonObject> json, FString KeyName)
 {
-	TArray<FString> DistanceJson;
-	json->TryGetStringArrayField(TEXT("Distance"), DistanceJson);
-	FVector Distance = FVector{ FCString::Atof(*DistanceJson[0]),
-								FCString::Atof(*DistanceJson[1]),
-								FCString::Atof(*DistanceJson[2]) };
-	return Distance;
+	TArray<FString> ArrayJson;
+	json->TryGetStringArrayField(*KeyName, ArrayJson);
+	FVector Vector = FVector{ FCString::Atof(*ArrayJson[0]),
+							  FCString::Atof(*ArrayJson[1]),
+							  FCString::Atof(*ArrayJson[2]) };
+	return Vector;
 }
 
-FVector USplineUnitGenerator::ParseVertexVector(TSharedPtr<FJsonObject> json)
+FRotator USplineUnitGenerator::ParseAsRotator(TSharedPtr<FJsonObject> json, FString KeyName)
 {
-	TArray<FString> VertexVectorJson;
-	json->TryGetStringArrayField(TEXT("VertexVector"), VertexVectorJson);
-	FVector VertexVector = FVector{ FCString::Atof(*VertexVectorJson[0]),
-									FCString::Atof(*VertexVectorJson[1]), 
-									FCString::Atof(*VertexVectorJson[2]) };
-	return VertexVector;
+	TArray<FString> ArrayJson;
+	json->TryGetStringArrayField(*KeyName, ArrayJson);
+	FRotator Rotator = FRotator{ FCString::Atof(*ArrayJson[0]),
+							  FCString::Atof(*ArrayJson[1]),
+							  FCString::Atof(*ArrayJson[2]) };
+	return Rotator;
 }
 
 FString USplineUnitGenerator::JsonFullPath(FString Path)
