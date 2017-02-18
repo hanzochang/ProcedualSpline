@@ -48,10 +48,13 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 		TSharedPtr<FJsonObject> json = value->AsObject();
 
 		ESplineUnit WaveType = ParseWaveType(json);
-		FVector UnitVector = ParseAsVector(json, FString("UnitVector"));
+		FRotator UnitRotator = ParseAsRotator(json, FString("UnitRotator"));
+		bool InheritRotatorPitch = json->GetBoolField(TEXT("InheritRotatorPitch"));
+		bool InheritRotatorYaw = json->GetBoolField(TEXT("InheritRotatorYaw"));
+		bool InheritRotatorInRoll = json->GetBoolField(TEXT("InheritRotatorInRoll"));
 		float Scalar = json->GetNumberField(TEXT("Scalar"));
 		int32 Density = json->GetNumberField(TEXT("Density"));
-		FVector CurveUnitVector = ParseAsVector(json, FString("CurveUnitVector"));
+		FRotator CurveUnitRotator = ParseAsRotator(json, FString("CurveUnitRotator"));
 		float CurveScalar = json->GetNumberField(TEXT("CurveScalar"));
 		float WaveFreq = json->GetNumberField(TEXT("WaveFreq"));
 		float Msec = json->GetNumberField(TEXT("WaveFreq"));
@@ -60,10 +63,13 @@ void USplineUnitGenerator::ParseJsonAndGenerateSplineUnits(TArray<FSplineUnit> &
 
 		FSplineUnit SplineUnit = FSplineUnit::GenerateSplineUnit(
 			WaveType,
-			UnitVector,
+			UnitRotator,
+			InheritRotatorPitch,
+			InheritRotatorYaw,
+			InheritRotatorInRoll,
 			Scalar,
 			Density,
-			CurveUnitVector,
+			CurveUnitRotator,
 			CurveScalar,
 			WaveFreq,
 			Msec,
@@ -110,6 +116,16 @@ FVector USplineUnitGenerator::ParseAsVector(TSharedPtr<FJsonObject> json, FStrin
 							  FCString::Atof(*ArrayJson[1]),
 							  FCString::Atof(*ArrayJson[2]) };
 	return Vector;
+}
+
+FRotator USplineUnitGenerator::ParseAsRotator(TSharedPtr<FJsonObject> json, FString KeyName)
+{
+	TArray<FString> ArrayJson;
+	json->TryGetStringArrayField(*KeyName, ArrayJson);
+	FRotator Rotator = FRotator{ FCString::Atof(*ArrayJson[0]),
+							  FCString::Atof(*ArrayJson[1]),
+							  FCString::Atof(*ArrayJson[2]) };
+	return Rotator;
 }
 
 FString USplineUnitGenerator::JsonFullPath(FString Path)

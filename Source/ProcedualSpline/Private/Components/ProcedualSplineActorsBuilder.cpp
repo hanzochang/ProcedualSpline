@@ -11,6 +11,7 @@ void UProcedualSplineActorsBuilder::Initialize(USplineComponent* OwnerSpline)
 
 void UProcedualSplineActorsBuilder::SpawnActors(TArray<FSplineUnit> &SplineUnits, int PointNum)
 {
+	// TODO SplineUnitごとにどうやってスポーンさせる？
 	FSplineUnit SplineUnit = SplineUnits[0];
 	for (auto i = 0; i < Spline->GetNumberOfSplinePoints(); i++) {
 		if (Owner && Spline) {

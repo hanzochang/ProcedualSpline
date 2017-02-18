@@ -25,38 +25,20 @@ struct FSplineUnit
     GENERATED_BODY()
 
 public:
-	// Distance内におけるPointsの配置方法
- //   UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
- //   ESplineUnit WaveType;
-
-	//// SplineUnitから生成される最初のLocation
- //   UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
- //   FVector StartLocation;
-
-	//// SplineUnitが表現する距離と方向
-	//UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
-	//FVector Distance;
- //   
-	//// カメラがDistance内を通過すべき時間
- //   UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
- //   float Msec;
- //   
-	//// WaveTypeがLinear以外の場合の曲線頂点のベクトル
- //   UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
- //   FVector VertexVector;
-
-	//// WaveTypeがLinear以外の場合のWaveの折り返し数
- //   UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
- //   float WaveCycleCount;
- //   
- //   UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
- //   int32 Density;
-
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
     ESplineUnit WaveType;
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
-    FVector UnitVector;
+    FRotator UnitRotator;
+
+	UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+	bool InheritRotatorPitch;
+
+	UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+	bool InheritRotatorYaw;
+
+	UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+	bool InheritRotatorInRoll;
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
     float Scalar;
@@ -65,7 +47,7 @@ public:
 	int32 Density;
 
 	UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
-	FVector CurveUnitVector;
+	FRotator CurveUnitRotator;
 
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
     float CurveScalar;
@@ -85,10 +67,13 @@ public:
 public:
 	static FSplineUnit GenerateSplineUnit(
 		ESplineUnit WaveType,
-		FVector UnitVector,
+		FRotator UnitRotator,
+		bool InheritRotatorPitch,
+		bool InheritRotatorYaw,
+		bool InheritRotatorInRoll,
 		float Scalar,
 		int32 Density,
-		FVector CurveUnitVector,
+		FRotator CurveUnitVector,
 		float CurveScalar,
 		float WaveFreq,
 		float Msec,
@@ -98,22 +83,21 @@ public:
 
 public:
 	FString ToDebugString();
-	FVector BetweenPoints();
-
-	//TArray<FVector> DeriveSplinePointsAddTo(
-	//	                         FVector PrevPoint = FVector{ 0,0,0 },
-	//							 FVector PrevDirection = FVector{ 0,0,0 },
-	//							 FRotator PrevRotation = FRotator{ 0,0,0 });
+	float ScalarPerPoint();
+	FVector UnitVector(FRotator PrevRotation);
+	FVector CurveUnitVector(FRotator PrevRotation);
+	TArray<FVector> DeriveSplinePointsAddTo(
+		                         FVector PrevPoint = FVector{ 0,0,0 },
+								 FVector PrevDirection = FVector{ 0,0,0 },
+								 FRotator PrevRotation = FRotator{ 0,0,0 });
 
 private:
-	// linearカーブでのSplinePoints生成を実施
-	//TArray<FVector> DeriveWaveLinearPoints(FVector PrevPoint,
-	//									   FVector PrevDirection, FRotator PrevRotation);
+	FRotator InheritableRotator(FRotator PrevRotation);
 
-	//// SinカーブでのSplinePoints生成を実施
-	//TArray<FVector> DeriveWaveSinPoints(FVector PrevPoint,
-	//						            FVector PrevDirection, FRotator PrevRotation);
+	TArray<FVector> DeriveWaveLinearPoints(FVector PrevPoint,
+										   FVector PrevDirection, FRotator PrevRotation);
 
-	//// TriangleカーブでのSplinePoints生成を実施
-	//TArray<FVector> DeriveWaveTrianglePoints(FVector PrevPoint);
+	TArray<FVector> DeriveWaveSinPoints(FVector PrevPoint,
+							            FVector PrevDirection, FRotator PrevRotation);
+
 };

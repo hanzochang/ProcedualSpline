@@ -22,14 +22,20 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 	{
 		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
 		counter = i % SplineUnits.Num();
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::FromInt(counter)); }
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, SplineUnits[counter].ToDebugString()); }
+		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::FromInt(counter)); }
+		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, SplineUnits[counter].ToDebugString()); }
 
-		//SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint);
-		//for (FVector SplinePoint : SplinePoints) {
-		//	Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
-		//}
-		//StartPoint = Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Local);
+		FVector Direction = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
+		FRotator Rotation  = Spline->GetRotationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
+
+		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red, Rotation.ToString()); }
+
+		SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint, Direction, Rotation);
+
+		for (FVector SplinePoint : SplinePoints) {
+			Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
+		}
+		StartPoint = Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Local);
 	}
 }
 
