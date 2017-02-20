@@ -10,34 +10,51 @@ void UProcedualSplinePointBuilder::Initialize(FProcedualSplineEntity &Entity,
 }
 
 void UProcedualSplinePointBuilder::AssignPointsToSpline(
-	FProcedualSplineEntity &Entity, TArray<FSplineUnit> &SplineUnits
+	FProcedualSplineEntity &Entity, FSpawnedSplineUnit &SpawnedSplineUnit, FVector &StartPoint
 )
 {
-	int32 counter = 0;
-	int32 TopmostSplineNumber = 0;
-	TArray<FVector> SplinePoints;
-	FVector StartPoint = FVector{ 0,0,0 }; //これはガン、SplineStructのほうにいれる
+	FVector PrevDirection = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
+	FRotator PrevRotation  = Spline->GetRotationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
 
-	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
-	{
-		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
-		counter = i % SplineUnits.Num();
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::FromInt(counter)); }
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, SplineUnits[counter].ToDebugString()); }
+	// デメテル違反 wrapする
+	// というか下記の塊は一括でSpawnedSplineUnitに持っていく
+	TArray<FVector> SplinePoints = SpawnedSplineUnit.SplineUnit.DeriveSplinePointsAddTo(StartPoint, PrevDirection, PrevRotation);
 
-		FVector Direction = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
-		FRotator Rotation  = Spline->GetRotationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
-
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red, Rotation.ToString()); }
-
-		SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint, Direction, Rotation);
-
-		for (FVector SplinePoint : SplinePoints) {
-			Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
-		}
-		StartPoint = Spline->GetLocationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Local);
+	for (FVector SplinePoint : SplinePoints) {
+		Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
+		SpawnedSplineUnit.PushAssignedSplineUnitPoints(Spline, Spline->GetNumberOfSplinePoints());
 	}
+	SpawnedSplineUnit.DeriveNextSpawnPoint();
+	// ここまでもってく
 }
+
+//void UProcedualSplinePointBuilder::AssignPointsToSpline(
+//	FProcedualSplineEntity &Entity, TArray<FSplineUnit> &SplineUnits
+//)
+//{
+//	int32 counter = 0;
+//	int32 TopmostSplineNumber = 0;
+//	TArray<FVector> SplinePoints;
+//	FVector StartPoint = FVector{ 0,0,0 }; //これはガン、SplineStructのほうにいれる
+//
+//	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
+//	{
+//		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
+//		counter = i % SplineUnits.Num();
+//
+//		FVector Direction = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
+//		FRotator Rotation  = Spline->GetRotationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
+//
+//		SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint, Direction, Rotation);
+//		StartPoint = SplineUnits[counter].DeriveNextSplineUnitStartPoint(StartPoint, Direction, Rotation);
+//
+//		for (FVector SplinePoint : SplinePoints) {
+//			Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
+//		}
+//
+//		// ここでSpawnActorをアサインじゃない？
+//	}
+//}
 
 //void UProcedualSplinePointBuilder::Initialize(FProcedualSplineEntity &Entity,
 //	USplineComponent *Spline,

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "SplineUnit.h"
+#include "SpawnedSplineUnit.h"
 #include "Components/PrimitiveComponent.h"
 #include "Components/SplineComponent.h"
 #include "ProcedualSplineActorsBuilder.generated.h"
@@ -24,5 +25,5 @@ public:
 
 public:
 	void Initialize(USplineComponent* OwnerSpline);
-	void SpawnActors(TArray<FSplineUnit> &SplineUnits, int PointNum);
+	void SpawnActors(FSpawnedSplineUnit &SpawnedSplineUnit);
 };

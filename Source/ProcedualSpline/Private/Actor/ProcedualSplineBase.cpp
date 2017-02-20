@@ -38,9 +38,33 @@ void AProcedualSplineBase::BeginPlay()
 	Super::BeginPlay();
 	//ProcedualSplineDirector->Initialize(ProcedualSplineEntity, ProcedualSplinePointBuilder);
 	ProcedualSplinePointBuilder->Initialize(ProcedualSplineEntity, Spline, SplineUnits);
-	ProcedualSplinePointBuilder->AssignPointsToSpline(ProcedualSplineEntity, SplineUnits);
 	ProcedualSplineActorsBuilder->Initialize(Spline);
-	ProcedualSplineActorsBuilder->SpawnActors(SplineUnits, 1);
+
+	// ‚±‚±‚ÍDirector‚ªÀs‚·‚é
+
+	int32 counter = 0;
+	int32 TopmostSplineNumber = 0;
+	TArray<FVector> AssignedSplinePoints;
+	TArray<FSpawnedSplineUnit> SpawnedSplineUnits;
+
+	FVector StartPoint = FVector{ 0,0,0 }; //‚±‚ê‚ÍƒKƒ“ASplineStruct‚Ì‚Ù‚¤‚É‚¢‚ê‚é
+
+	for (int32 i = 0; i < ProcedualSplineEntity.DisplayableSplineUnitSum(); i++)
+	{
+		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
+		counter = i % SplineUnits.Num();
+
+		FSplineUnit SplineUnit = SplineUnits[counter];
+		FSpawnedSplineUnit SpawnedSplineUnit = FSpawnedSplineUnit::GenerateSpawnedSplineUnit(SplineUnit);
+
+		ProcedualSplinePointBuilder->AssignPointsToSpline(ProcedualSplineEntity, SpawnedSplineUnit, StartPoint);
+
+		// –¾“ú‚Í‚±‚Ìˆ—“à‚ÅASpawnedSplineUnit‚ÉActor‚ğ‚µ‚Ü‚¤
+		ProcedualSplineActorsBuilder->SpawnActors(SpawnedSplineUnit);
+
+		StartPoint = SpawnedSplineUnit.NextSpawnPoint;
+		SpawnedSplineUnits.Push(SpawnedSplineUnit);
+	}
 
 	//for (auto i = 0; i < Spline->GetNumberOfSplinePoints(); i++) {
 	//	ProcedualSplineActorsBuilder->SetDebugGridsEachSplinePoints(WhatToSpawn, i);

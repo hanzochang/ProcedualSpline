@@ -86,10 +86,15 @@ public:
 	float ScalarPerPoint();
 	FVector UnitVector(FRotator PrevRotation);
 	FVector CurveUnitVector(FRotator PrevRotation);
+
 	TArray<FVector> DeriveSplinePointsAddTo(
 		                         FVector PrevPoint = FVector{ 0,0,0 },
 								 FVector PrevDirection = FVector{ 0,0,0 },
 								 FRotator PrevRotation = FRotator{ 0,0,0 });
+
+	FVector DeriveNextSplineUnitStartPoint(FVector PrevPoint = FVector{ 0,0,0 },
+										   FVector PrevDirection = FVector{ 0,0,0 },
+										   FRotator PrevRotation = FRotator{ 0,0,0 });
 
 private:
 	FRotator InheritableRotator(FRotator PrevRotation);

@@ -4,6 +4,7 @@
 
 #include "Components/PrimitiveComponent.h"
 #include "SplineUnit.h"
+#include "SpawnedSplineUnit.h"
 #include "ProcedualSplineEntity.h"
 #include "Components/SplineComponent.h"
 #include "ProcedualSplinePointBuilder.generated.h"
@@ -25,6 +26,7 @@ public:
 		USplineComponent *SplineComponent,
 		TArray<FSplineUnit> &SplineUnits);
 
-	void AssignPointsToSpline(FProcedualSplineEntity &Entity, TArray<FSplineUnit> &SplineUnits);
+	//void AssignPointsToSpline(FProcedualSplineEntity &Entity, TArray<FSplineUnit> &SplineUnits);
+	void AssignPointsToSpline(FProcedualSplineEntity &Entity, FSpawnedSplineUnit &SpawnedSplineUnit, FVector &StartPoint);
 
 };

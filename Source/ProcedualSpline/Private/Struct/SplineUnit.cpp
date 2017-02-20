@@ -118,6 +118,29 @@ TArray<FVector> FSplineUnit::DeriveSplinePointsAddTo(FVector PrevPoint,
 	return Points;
 }
 
+FVector FSplineUnit::DeriveNextSplineUnitStartPoint(FVector PrevPoint, FVector PrevDirection, FRotator PrevRotation)
+{
+	FVector Point;
+
+	switch (WaveType)
+	{
+	case ESplineUnit::WAVE_LINEAR:
+		Point = (PrevPoint + (UnitVector(PrevRotation) * ScalarPerPoint() * (Density + 1)));
+		break;
+
+	case ESplineUnit::WAVE_SIN:
+		// TODO Spiit to anothor method
+		float VertexBase = FMath::Sin(PI / Density * (Density + 1) * WaveFreq);
+		FVector Uv = UnitVector(PrevRotation);
+		FVector Cuv = CurveUnitVector(PrevRotation);
+
+		Point = PrevPoint + (Uv * ScalarPerPoint() * (Density + 1)) + (Cuv * CurveScalar * VertexBase);
+		break;
+	}
+
+	return Point;
+}
+
 
 /**
 * private
@@ -135,7 +158,7 @@ TArray<FVector> FSplineUnit::DeriveWaveLinearPoints(FVector PrevPoint, FVector P
 {
 	TArray<FVector> Points;
 
-	for (auto i = 0; i < Density; i++)
+	for (auto i = 0; i <= Density; i++)
 	{
 		Points.Push(PrevPoint + (UnitVector(PrevRotation) * ScalarPerPoint() * i));
 	}
@@ -145,11 +168,12 @@ TArray<FVector> FSplineUnit::DeriveWaveLinearPoints(FVector PrevPoint, FVector P
 
 TArray<FVector> FSplineUnit::DeriveWaveSinPoints(FVector PrevPoint, FVector PrevDirection, FRotator PrevRotation)
 {
+	// TODO Spiit to anothor method
 	TArray<FVector> Points;
 	FVector Uv = UnitVector(PrevRotation);
 	FVector Cuv = CurveUnitVector(PrevRotation);
 
-	for (auto i = 0; i < Density; i++)
+	for (auto i = 0; i <= Density; i++)
 	{
 		float VertexBase = FMath::Sin(PI / Density * i * WaveFreq);
 		Points.Push(PrevPoint + (Uv * ScalarPerPoint() * i) + (Cuv * CurveScalar * VertexBase));

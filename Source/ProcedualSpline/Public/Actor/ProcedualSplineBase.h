@@ -4,6 +4,7 @@
 
 #include "GameFramework/Actor.h"
 #include "SplineUnit.h"
+#include "SpawnedSplineUnit.h"
 #include "SplineUnitGenerator.h"
 #include "ProcedualSplineEntity.h"
 #include "ProcedualSplineDirector.h"
