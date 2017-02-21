@@ -54,12 +54,16 @@ void FSpawnableActor::AssignPlacementType(FString Str)
  */
 void FSpawnableActor::AssignWhatToSpawn(FString Str)
 {
-	static ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder( *Str );
+	// TODO ’²¸ static‚ğ‚Â‚¯‚È‚¢‚±‚Æ‚Ì•¾ŠQ
+	// static ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder( *Str );
+	ConstructorHelpers::FObjectFinder<UBlueprint> ActorFinder = ConstructorHelpers::FObjectFinder<UBlueprint>( *Str );
 	if (ActorFinder.Succeeded())
 	{
 		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Succeeded loading Blueprint Class")); }
 		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, Str); }
 		WhatToSpawn = (UClass*)ActorFinder.Object->GeneratedClass;
+
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, WhatToSpawn->GetName()); }
 	}
 	else
 	{

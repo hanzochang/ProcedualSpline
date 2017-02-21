@@ -16,16 +16,8 @@ AProcedualSplineBase::AProcedualSplineBase()
     ProcedualSplineDirector = CreateDefaultSubobject<UProcedualSplineDirector>(FName("SplineDirector"));
     ProcedualSplinePointBuilder = CreateDefaultSubobject<UProcedualSplinePointBuilder>(FName("SplinePointBuilder"));
     ProcedualSplineActorsBuilder = CreateDefaultSubobject<UProcedualSplineActorsBuilder>(FName("SplineActorsBuilder"));
-	ProcedualSplineEntity = FProcedualSplineEntity(40);
+	ProcedualSplineEntity = FProcedualSplineEntity(10);
 	SplineUnits = SplineUnitGenerator->GenerateSplineUnits("splinetest2.json");
-
-	static ConstructorHelpers::FObjectFinder<UBlueprint> DebugGridClassFinder( TEXT( "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'" ) );
-	if (DebugGridClassFinder.Succeeded())
-	{
-		WhatToSpawn = (UClass*)DebugGridClassFinder.Object->GeneratedClass;
-	}
-
-	Init();
 }
 
 void AProcedualSplineBase::Init()

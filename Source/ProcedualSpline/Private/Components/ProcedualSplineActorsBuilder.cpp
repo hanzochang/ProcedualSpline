@@ -19,14 +19,19 @@ void UProcedualSplineActorsBuilder::SpawnActors(FSpawnedSplineUnit &SpawnedSplin
 				FActorSpawnParameters SpawnParams;
 				SpawnParams.Owner = Owner;
 
-				AActor* const SpawningObject = GetWorld()->SpawnActor<AActor>(SpawnableActor.WhatToSpawn,
-					AssignedSplineUnitPoint.Location, AssignedSplineUnitPoint.Rotation, SpawnParams);
+				AActor* const SpawningObject = 
+					GetWorld()->SpawnActor<AActor>(
+						SpawnableActor.WhatToSpawn,
+					    AssignedSplineUnitPoint.Location,
+						AssignedSplineUnitPoint.Rotation,
+						SpawnParams
+					);
 			}
 
 		}
 		else {
 			if (GEngine) {
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("UProedualSplineActorsBuilder aren't initialized"));
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("UProedualSplineActorsBuilder doesn't initialized"));
 			}
 		}
 

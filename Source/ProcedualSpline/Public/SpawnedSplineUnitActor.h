@@ -1,0 +1,19 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "Components/SplineComponent.h"
+#include "SpawnedSplineUnitActor.generated.h"
+
+USTRUCT(BlueprintType)
+struct FSpawnedSplineUnitActor
+{
+	GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+	AActor* SpawningObject;
+
+public:
+	void SpawnActor(AActor* Owner);
+};
