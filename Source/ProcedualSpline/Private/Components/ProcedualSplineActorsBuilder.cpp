@@ -26,6 +26,8 @@ void UProcedualSplineActorsBuilder::SpawnActors(FSpawnedSplineUnit &SpawnedSplin
 						AssignedSplineUnitPoint.Rotation,
 						SpawnParams
 					);
+
+				SpawnedSplineUnit.PushSpawnedSplineUnitActor(SpawningObject);
 			}
 
 		}

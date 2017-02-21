@@ -12,8 +12,11 @@ struct FSpawnedSplineUnitActor
 
 public:
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
-	AActor* SpawningObject;
+	AActor* SpawnedObject;
 
 public:
-	void SpawnActor(AActor* Owner);
+	static FSpawnedSplineUnitActor Generate(AActor* SpawnedObject);
+
+public:
+	void Destroy();
 };
