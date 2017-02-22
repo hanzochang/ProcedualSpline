@@ -25,12 +25,6 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// initialize procedure
-	void Init();
-
-	// BlueprintƒNƒ‰ƒX, ˆÚ“®—\’è
-	TSubclassOf<class AActor> WhatToSpawn;
-
 	UPROPERTY(VisibleAnyWhere)
 	USplineComponent* Spline;
 
@@ -39,8 +33,10 @@ public:
 
 	TArray<FSplineUnit> SplineUnits;
 	FProcedualSplineEntity ProcedualSplineEntity;
+	TArray<FSpawnedSplineUnit> SpawnedSplineUnits;
 
 	USplineUnitGenerator* SplineUnitGenerator;
+
 	UProcedualSplineDirector* ProcedualSplineDirector;
 	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
 	UProcedualSplineActorsBuilder* ProcedualSplineActorsBuilder;

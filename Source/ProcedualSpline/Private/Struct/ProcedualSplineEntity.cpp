@@ -5,14 +5,14 @@
 
 FProcedualSplineEntity::FProcedualSplineEntity(int32 UnitLimit)
 {
-	TotalSplineUnitLength = 0;
-	CurrentSplineUnitLength = 0;
-	CurrentToSplineUnitNum = 0;
-	PrevSplineUnitPointStartNum = 0;
-	PrevSplineUnitPointEndNum = 0;
-	DisplayableSplineUnitLength = 0;
-	DisplayableSplineUnitLimit = 0;
-	DisplayableSplineUnitLimit = UnitLimit;
+	//TotalSplineUnitLength = 0;
+	//CurrentSplineUnitLength = 0;
+	//CurrentToSplineUnitNum = 0;
+	//PrevSplineUnitPointStartNum = 0;
+	//PrevSplineUnitPointEndNum = 0;
+	//DisplayableSplineUnitLength = 0;
+	//DisplayableSplineUnitLimit = 0;
+	//DisplayableSplineUnitLimit = UnitLimit;
 
 	DisplayableSplineUnitBuffer = UnitLimit;
 	TopmostSplineUnitNumber = 0;

@@ -3,14 +3,10 @@
 #include "ProcedualSpline.h"
 #include "ProcedualSplinePointBuilder.h"
 
-void UProcedualSplinePointBuilder::Initialize(FProcedualSplineEntity &Entity,
-	USplineComponent *SplineComponent, TArray<FSplineUnit> &SplineUnits)
-{
-	Spline = SplineComponent;
-}
-
 void UProcedualSplinePointBuilder::AssignPointsToSpline(
-	FProcedualSplineEntity &Entity, FSpawnedSplineUnit &SpawnedSplineUnit, FVector &StartPoint
+	USplineComponent *Spline,
+	FSpawnedSplineUnit &SpawnedSplineUnit,
+	FVector &StartPoint
 )
 {
 	FVector PrevDirection = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
@@ -25,36 +21,7 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 		SpawnedSplineUnit.PushAssignedSplineUnitPoints(Spline, Spline->GetNumberOfSplinePoints());
 	}
 	SpawnedSplineUnit.DeriveNextSpawnPoint();
-	// ここまでもってく
 }
-
-//void UProcedualSplinePointBuilder::AssignPointsToSpline(
-//	FProcedualSplineEntity &Entity, TArray<FSplineUnit> &SplineUnits
-//)
-//{
-//	int32 counter = 0;
-//	int32 TopmostSplineNumber = 0;
-//	TArray<FVector> SplinePoints;
-//	FVector StartPoint = FVector{ 0,0,0 }; //これはガン、SplineStructのほうにいれる
-//
-//	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
-//	{
-//		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
-//		counter = i % SplineUnits.Num();
-//
-//		FVector Direction = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
-//		FRotator Rotation  = Spline->GetRotationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
-//
-//		SplinePoints = SplineUnits[counter].DeriveSplinePointsAddTo(StartPoint, Direction, Rotation);
-//		StartPoint = SplineUnits[counter].DeriveNextSplineUnitStartPoint(StartPoint, Direction, Rotation);
-//
-//		for (FVector SplinePoint : SplinePoints) {
-//			Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
-//		}
-//
-//		// ここでSpawnActorをアサインじゃない？
-//	}
-//}
 
 //void UProcedualSplinePointBuilder::Initialize(FProcedualSplineEntity &Entity,
 //	USplineComponent *Spline,

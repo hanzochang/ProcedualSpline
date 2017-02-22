@@ -17,13 +17,6 @@ class PROCEDUALSPLINE_API UProcedualSplineActorsBuilder : public UPrimitiveCompo
 	GENERATED_BODY()
 
 public:
-	//UPROPERTY(EditAnywhere, Category = General)
-    //TSubclassOf<class AActor> WhatToSpawn;
+	void SpawnActors(AActor *Owner, USplineComponent *Spline, FSpawnedSplineUnit &SpawnedSplineUnit);
 
-	AActor* Owner;
-	USplineComponent* Spline;
-
-public:
-	void Initialize(USplineComponent* OwnerSpline);
-	void SpawnActors(FSpawnedSplineUnit &SpawnedSplineUnit);
 };

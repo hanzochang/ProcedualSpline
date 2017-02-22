@@ -3,8 +3,11 @@
 #pragma once
 
 #include "Components/PrimitiveComponent.h"
+#include "Components/SplineComponent.h"
+#include "SplineUnit.h"
 #include "ProcedualSplineEntity.h"
 #include "ProcedualSplinePointBuilder.h"
+#include "ProcedualSplineActorsBuilder.h"
 #include "ProcedualSplineDirector.generated.h"
 
 /**
@@ -16,10 +19,27 @@ class PROCEDUALSPLINE_API UProcedualSplineDirector : public UPrimitiveComponent
 	GENERATED_BODY()
 
 public:
+	USplineComponent *Spline;
+	TArray<FSplineUnit> *SplineUnits;
+	FProcedualSplineEntity *Entity;
 	UProcedualSplinePointBuilder *ProcedualSplinePointBuilder;
+	UProcedualSplineActorsBuilder *ProcedualSplineActorsBuilder;
+
+	AActor *Owner;
 
 public:
-	void Initialize(FProcedualSplineEntity &Entity,
-		            UProcedualSplinePointBuilder *ProcedualSplinePointBuilder);
-	
+	void Initialize(
+		USplineComponent *Spline,
+		TArray<FSplineUnit> *SplineUnits,
+		FProcedualSplineEntity *Entity,
+		UProcedualSplinePointBuilder *InProcedualSplinePointBuilder,
+		UProcedualSplineActorsBuilder *InProcedualSplineActorsBuilder
+	);
+
+	void CreateInitialSpline(
+		FProcedualSplineEntity &Entity,
+		TArray<FSplineUnit> &SplineUnits,
+		TArray<FSpawnedSplineUnit> &SpawnedSplineUnits
+	);
+
 };

@@ -3,13 +3,11 @@
 #include "ProcedualSpline.h"
 #include "ProcedualSplineActorsBuilder.h"
 
-void UProcedualSplineActorsBuilder::Initialize(USplineComponent* OwnerSpline)
-{
-	Owner = GetOwner();
-	Spline = OwnerSpline;
-}
-
-void UProcedualSplineActorsBuilder::SpawnActors(FSpawnedSplineUnit &SpawnedSplineUnit)
+void UProcedualSplineActorsBuilder::SpawnActors(
+	AActor *Owner,
+	USplineComponent *Spline,
+	FSpawnedSplineUnit &SpawnedSplineUnit
+)
 {
 	for (FAssignedSplineUnitPoint AssignedSplineUnitPoint : SpawnedSplineUnit.AssignedSplineUnitPoints)
 	{

@@ -16,16 +16,15 @@ public:
 	FProcedualSplineEntity(int32 UnitLimit = 1);
 	FString ToDebugString();
 
-	TArray<TArray<AActor*>> SpawnActors;
-
-	float TotalSplineUnitLength;
-	float CurrentSplineUnitLength;
-	int32 CurrentToSplineUnitNum;
-	int32 PrevSplineUnitPointStartNum;
-	int32 PrevSplineUnitPointEndNum;
-	TArray<float> DisplayableSplineUnitLengths;
-	int32 DisplayableSplineUnitLimit;
-	float DisplayableSplineUnitLength;
+	//TArray<TArray<AActor*>> SpawnActors;
+	//float TotalSplineUnitLength;
+	//float CurrentSplineUnitLength;
+	//int32 CurrentToSplineUnitNum;
+	//int32 PrevSplineUnitPointStartNum;
+	//int32 PrevSplineUnitPointEndNum;
+	//TArray<float> DisplayableSplineUnitLengths;
+	//int32 DisplayableSplineUnitLimit;
+	//float DisplayableSplineUnitLength;
 
     // 現在のSplineUnitからの同時表示可能なバッファ数を規定
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
