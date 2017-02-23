@@ -3,9 +3,9 @@
   [
     {
       "WaveType": "WAVE_LINEAR",
-      "UnitRotator": [2,0,0],
+      "UnitRotator": [2,30,0],
       "InheritRotatorPitch": true,
-      "InheritRotatorYaw": false,
+      "InheritRotatorYaw": true,
       "InheritRotatorInRoll": true,
       "Scalar": 10000.0,
       "Density": 10,
