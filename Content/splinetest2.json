@@ -2,16 +2,16 @@
   "SplineUnits":
   [
     {
-      "WaveType": "WAVE_SIN",
-      "UnitRotator": [1,0,0],
+      "WaveType": "WAVE_LINEAR",
+      "UnitRotator": [2,0,0],
       "InheritRotatorPitch": true,
       "InheritRotatorYaw": false,
       "InheritRotatorInRoll": true,
-      "Scalar": 2000.0,
+      "Scalar": 10000.0,
       "Density": 10,
       "CurveUnitRotator": [0,90,0],
       "CurveScalar": 1000,
-      "WaveFreq": 0.5,
+      "WaveFreq": 2,
       "Msec": 10,
       "loop": 10,
       "SpawnableActors": [
@@ -21,25 +21,5 @@
         }
       ]
     },
-    {
-      "WaveType": "WAVE_LINEAR",
-      "UnitRotator": [1,0,0],
-      "InheritRotatorPitch": true,
-      "InheritRotatorYaw": false,
-      "InheritRotatorInRoll": true,
-      "Scalar": 2000.0,
-      "Density": 10,
-      "CurveUnitRotator": [0,90,0],
-      "CurveScalar": 1000,
-      "WaveFreq": 2,
-      "Msec": 10,
-      "loop": 10,
-      "SpawnableActors": [
-        {
-          "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_02.B_DebugGrid_02'",
-          "PlacementType": "EACH_POINT"
-        }
-      ]
-    }
   ]
 }
