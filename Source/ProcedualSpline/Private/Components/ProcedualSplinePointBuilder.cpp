@@ -20,7 +20,6 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 		Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
 		SpawnedSplineUnit.PushAssignedSplineUnitPoints(Spline, Spline->GetNumberOfSplinePoints());
 	}
-	SpawnedSplineUnit.DeriveNextSpawnPoint();
 }
 
 //void UProcedualSplinePointBuilder::Initialize(FProcedualSplineEntity &Entity,

@@ -33,7 +33,7 @@ public:
 
 	void PushSpawnedSplineUnitActor(AActor* SpawnedActor);
 
-	void DeriveNextSpawnPoint();
+	void DeriveNextSpawnPoint(FSpawnedSplineUnit &SpawnedSplineUnit);
 
 	void Destroy();
 

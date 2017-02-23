@@ -29,7 +29,7 @@ void UProcedualSplineDirector::CreateInitialSpline(
 	// —áŠOˆ—‚ğ‘‚­BBuilder‚ª‚È‚©‚Á‚½ê‡ 
 	int32 counter = 0;
 	int32 TopmostSplineNumber = 0;
-	TArray<FVector> AssignedSplinePoints;
+	FSpawnedSplineUnit PreviousSpawnedSplineUnit;
 	FVector StartPoint = FVector{ 0,0,0 }; //‚±‚ê‚ÍSplineStruct‚Ì‚Ù‚¤‚É‚¢‚ê‚é
 
 	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
@@ -43,8 +43,11 @@ void UProcedualSplineDirector::CreateInitialSpline(
 		ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, StartPoint);
 		ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
 
+		SpawnedSplineUnit.DeriveNextSpawnPoint(PreviousSpawnedSplineUnit);
 		StartPoint = SpawnedSplineUnit.NextSpawnPoint;
 		SpawnedSplineUnits.Push(SpawnedSplineUnit);
+
+		PreviousSpawnedSplineUnit = SpawnedSplineUnit;
 	}
 
 	//for (FSpawnedSplineUnit SpawnedSplineUnit : SpawnedSplineUnits)

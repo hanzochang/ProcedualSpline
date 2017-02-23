@@ -23,11 +23,21 @@ void FSpawnedSplineUnit::PushSpawnedSplineUnitActor(AActor* SpawnedActor)
 
 }
 
-void FSpawnedSplineUnit::DeriveNextSpawnPoint()
+void FSpawnedSplineUnit::DeriveNextSpawnPoint(FSpawnedSplineUnit &SpawnedSplineUnit)
 {
-	FAssignedSplineUnitPoint LastAssignedSplineUnitPoint = AssignedSplineUnitPoints.Last();
 	FVector FirstPoint = AssignedSplineUnitPoints[0].Location;
-	NextSpawnPoint = SplineUnit.DeriveNextSplineUnitStartPoint(FirstPoint, LastAssignedSplineUnitPoint.Location, LastAssignedSplineUnitPoint.Rotation);
+	if (SpawnedSplineUnit.AssignedSplineUnitPoints.Num() > 0)
+	{ 
+		FAssignedSplineUnitPoint PrevAssignedSplineUnitPoint = SpawnedSplineUnit.AssignedSplineUnitPoints.Last();
+		FVector PrevLocation = PrevAssignedSplineUnitPoint.Location;
+		FRotator PrevRotation = PrevAssignedSplineUnitPoint.Rotation;
+		NextSpawnPoint = SplineUnit.DeriveNextSplineUnitStartPoint(FirstPoint, PrevLocation, PrevRotation);
+	}
+	else {
+		FVector PrevLocation = FVector{ 0,0,0 };
+		FRotator PrevRotation = FRotator{ 0,0,0 };
+		NextSpawnPoint = SplineUnit.DeriveNextSplineUnitStartPoint(FirstPoint, PrevLocation, PrevRotation);
+	}
 }
 
 void FSpawnedSplineUnit::Destroy()
