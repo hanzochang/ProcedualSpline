@@ -25,6 +25,10 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	//virtual void Tick( float DeltaSeconds ) override;
+
+public:
+
 	UPROPERTY(VisibleAnyWhere)
 	USplineComponent* Spline;
 
@@ -40,4 +44,16 @@ public:
 	UProcedualSplineDirector* ProcedualSplineDirector;
 	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
 	UProcedualSplineActorsBuilder* ProcedualSplineActorsBuilder;
+
+
+public:	
+	UFUNCTION(BlueprintCallable, Category=General)
+	FVector GetCurrentLocationAlongSpline(float distance);
+
+	UFUNCTION(BlueprintCallable, Category=General)
+	FRotator GetCurrentRotationAlongSpline(float distance);
+
+	UFUNCTION(BlueprintCallable, Category=General)
+	FVector GetCurrentDirectionAlongSpline(float distance);
+
 };

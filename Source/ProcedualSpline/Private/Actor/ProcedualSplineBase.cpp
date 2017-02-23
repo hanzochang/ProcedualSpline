@@ -28,3 +28,18 @@ void AProcedualSplineBase::BeginPlay()
 	ProcedualSplineDirector->Initialize(Spline, &SplineUnits, &ProcedualSplineEntity, ProcedualSplinePointBuilder, ProcedualSplineActorsBuilder);
 	ProcedualSplineDirector->CreateInitialSpline(ProcedualSplineEntity, SplineUnits, SpawnedSplineUnits);
 }
+
+FVector AProcedualSplineBase ::GetCurrentLocationAlongSpline(float distance)
+{
+	return Spline->GetWorldLocationAtDistanceAlongSpline(distance);
+}
+
+FVector AProcedualSplineBase::GetCurrentDirectionAlongSpline(float distance)
+{
+	return Spline->GetWorldDirectionAtDistanceAlongSpline(distance);
+}
+
+FRotator AProcedualSplineBase::GetCurrentRotationAlongSpline(float distance)
+{
+	return Spline->GetWorldRotationAtDistanceAlongSpline(distance);
+}
