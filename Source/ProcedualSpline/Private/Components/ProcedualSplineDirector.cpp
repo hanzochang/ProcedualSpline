@@ -21,7 +21,6 @@ void UProcedualSplineDirector::Initialize(
 }
 
 void UProcedualSplineDirector::CreateInitialSpline(
-	FProcedualSplineEntity &Entity,
 	TArray<FSplineUnit> &SplineUnits,
 	TArray<FSpawnedSplineUnit> &SpawnedSplineUnits
 )
@@ -30,13 +29,15 @@ void UProcedualSplineDirector::CreateInitialSpline(
 	int32 counter = 0;
 	int32 TopmostSplineNumber = 0;
 	FSpawnedSplineUnit PreviousSpawnedSplineUnit;
+	float CurrentLength = 0;
 	FVector StartPoint = FVector{ 0,0,0 }; //‚±‚ê‚ÍSplineStruct‚Ì‚Ù‚¤‚É‚¢‚ê‚é
 
-	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
+	for (int32 i = 0; i < Entity->DisplayableSplineUnitSum(); i++)
 	{
 		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
+		CurrentLength = Spline->GetSplineLength();
 		counter = i % SplineUnits.Num();
-
+		
 		FSplineUnit SplineUnit = SplineUnits[counter];
 		FSpawnedSplineUnit SpawnedSplineUnit = FSpawnedSplineUnit::GenerateSpawnedSplineUnit(SplineUnit);
 
@@ -44,14 +45,48 @@ void UProcedualSplineDirector::CreateInitialSpline(
 		ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
 
 		SpawnedSplineUnit.DeriveNextSpawnPoint(PreviousSpawnedSplineUnit);
+		SpawnedSplineUnit.Length = Spline->GetSplineLength() - CurrentLength;
 		StartPoint = SpawnedSplineUnit.NextSpawnPoint;
-		SpawnedSplineUnits.Push(SpawnedSplineUnit);
 
+		SpawnedSplineUnits.Push(SpawnedSplineUnit);
 		PreviousSpawnedSplineUnit = SpawnedSplineUnit;
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::SanitizeFloat(SpawnedSplineUnit.Length)); }
 	}
+
+	RefreshEntityParameters(SpawnedSplineUnits);
 
 	//for (FSpawnedSplineUnit SpawnedSplineUnit : SpawnedSplineUnits)
 	//{
 	//	SpawnedSplineUnit.Destroy();
 	//}
+}
+
+void UProcedualSplineDirector::CheckProcedualSplineEntity(FProcedualSplineEntity &Entity, float CurrentLength)
+{
+
+}
+
+void UProcedualSplineDirector::RefreshEntityParameters(TArray<FSpawnedSplineUnit> &SpawnedSplineUnits)
+{
+	float SplineLength = 0;
+	for (int32 i = 0; i < SpawnedSplineUnits.Num(); i++)
+	{
+		float number = i + 1;
+
+		if (number == Entity->DisplayableSplineUnitBuffer)
+		{
+			Entity->RearRefreshSplineLength = SplineLength + SpawnedSplineUnits[i].Length / 2;
+		}
+		else if (number == (Entity->DisplayableSplineUnitBuffer + 1 + 1))
+		{
+			Entity->TopRefreshSplineLength = SplineLength + SpawnedSplineUnits[i].Length / 2;
+		}
+
+		SplineLength += SpawnedSplineUnits[i].Length;
+	}
+
+	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::SanitizeFloat(SplineLength)); }
+	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::SanitizeFloat(Entity->RearRefreshSplineLength)); }
+	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::SanitizeFloat(Entity->TopRefreshSplineLength)); }
+
 }

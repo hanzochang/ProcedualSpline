@@ -16,7 +16,7 @@ AProcedualSplineBase::AProcedualSplineBase()
     ProcedualSplineDirector = CreateDefaultSubobject<UProcedualSplineDirector>(FName("SplineDirector"));
     ProcedualSplinePointBuilder = CreateDefaultSubobject<UProcedualSplinePointBuilder>(FName("SplinePointBuilder"));
     ProcedualSplineActorsBuilder = CreateDefaultSubobject<UProcedualSplineActorsBuilder>(FName("SplineActorsBuilder"));
-	ProcedualSplineEntity = FProcedualSplineEntity(10);
+	ProcedualSplineEntity = FProcedualSplineEntity(2);
 
 	SplineUnits = SplineUnitGenerator->GenerateSplineUnits("splinetest2.json");
 }
@@ -26,7 +26,7 @@ void AProcedualSplineBase::BeginPlay()
 {
 	Super::BeginPlay();
 	ProcedualSplineDirector->Initialize(Spline, &SplineUnits, &ProcedualSplineEntity, ProcedualSplinePointBuilder, ProcedualSplineActorsBuilder);
-	ProcedualSplineDirector->CreateInitialSpline(ProcedualSplineEntity, SplineUnits, SpawnedSplineUnits);
+	ProcedualSplineDirector->CreateInitialSpline(SplineUnits, SpawnedSplineUnits);
 }
 
 FVector AProcedualSplineBase ::GetCurrentLocationAlongSpline(float distance)

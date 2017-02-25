@@ -12,8 +12,7 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 	FVector PrevDirection = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
 	FRotator PrevRotation  = Spline->GetRotationAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
 
-	// デメテル違反 wrapする
-	// というか下記の塊は一括でSpawnedSplineUnitに持っていく
+	// デメテル違反
 	TArray<FVector> SplinePoints = SpawnedSplineUnit.SplineUnit.DeriveSplinePointsAddTo(StartPoint, PrevDirection, PrevRotation);
 
 	for (FVector SplinePoint : SplinePoints) {

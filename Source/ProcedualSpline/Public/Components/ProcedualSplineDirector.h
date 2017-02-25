@@ -37,9 +37,13 @@ public:
 	);
 
 	void CreateInitialSpline(
-		FProcedualSplineEntity &Entity,
 		TArray<FSplineUnit> &SplineUnits,
 		TArray<FSpawnedSplineUnit> &SpawnedSplineUnits
 	);
+
+	void CheckProcedualSplineEntity(FProcedualSplineEntity &Entity, float CurrentLength);
+
+private:
+	void RefreshEntityParameters(TArray<FSpawnedSplineUnit> &SpawnedSplineUnits);
 
 };

@@ -19,6 +19,9 @@ public:
 	UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
 	FVector NextSpawnPoint;
 
+	UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+	float Length;
+
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
     TArray<FAssignedSplineUnitPoint> AssignedSplineUnitPoints;
 

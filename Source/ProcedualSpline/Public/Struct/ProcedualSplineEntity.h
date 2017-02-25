@@ -34,7 +34,7 @@ public:
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
 	int32 TopmostSplineUnitNumber;
 
-    // Œ»İ•\¦‚ğ‹–‰Â‚³‚ê‚Ä‚¢‚éæ“ª‚ÌSplineUnit‚Ì”
+    // Œ»İ•\¦‚ğ‹–‰Â‚³‚ê‚Ä‚¢‚éŒã‚ë‚ÌSplineUnit‚Ì”
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
 	int32 RearmostSplineUnitNumber;
 
