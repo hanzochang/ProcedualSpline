@@ -20,8 +20,7 @@ public:
 	void AssignPointsToSpline(
 		USplineComponent *Spline,
 		FSpawnedSplineUnit &SpawnedSplineUnit,
-		FVector &StartPoint,
-		int32 &PointsIndex
+		FVector &StartPoint
 	);
 
 	void DestroyPointsFromSpline(

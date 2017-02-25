@@ -48,7 +48,6 @@ void FSpawnedSplineUnit::DeriveNextSpawnPoint(FSpawnedSplineUnit &SpawnedSplineU
 
 void FSpawnedSplineUnit::Destroy()
 {
-	
 	for (FSpawnedSplineUnitActor SpawnedSplineUnitActor : SpawnedSplineUnitActors)
 	{
 		SpawnedSplineUnitActor.Destroy();

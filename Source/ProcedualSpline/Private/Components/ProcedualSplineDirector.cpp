@@ -18,7 +18,8 @@ void UProcedualSplineDirector::Initialize(
 	Entity = InEntity;
 	ProcedualSplinePointBuilder = InProcedualSplinePointBuilder;
 	ProcedualSplineActorsBuilder = InProcedualSplineActorsBuilder;
-	PointsIndex = 0;
+
+	testFlag = true;
 
     Owner = GetOwner();
 }
@@ -41,7 +42,7 @@ void UProcedualSplineDirector::CreateInitialSpline()
 		FSplineUnit SplineUnit = SplineUnits[counter];
 		FSpawnedSplineUnit SpawnedSplineUnit = FSpawnedSplineUnit::GenerateSpawnedSplineUnit(SplineUnit);
 
-		ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, StartPoint, PointsIndex);
+		ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, StartPoint);
 		ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
 
 		SpawnedSplineUnit.DeriveNextSpawnPoint(PreviousSpawnedSplineUnit);
@@ -51,11 +52,9 @@ void UProcedualSplineDirector::CreateInitialSpline()
 		SpawnedSplineUnits.Push(SpawnedSplineUnit);
 		PreviousSpawnedSplineUnit = SpawnedSplineUnit;
 		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::SanitizeFloat(SpawnedSplineUnit.Length)); }
-		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Black, FString::FromInt(PointsIndex)); }
 
 		Entity.TopmostNextSpawnableCounter = i;
 	}
-	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Green, Spline->GetLocationAtSplinePoint(100, ESplineCoordinateSpace::Local).ToString() ); }
 
 	RefreshEntityParameters();
 
@@ -67,30 +66,47 @@ void UProcedualSplineDirector::CreateInitialSpline()
 
 void UProcedualSplineDirector::CheckProcedualSplineEntity(float CurrentLength)
 {
-	if (CurrentLength >= Entity.TopRefreshSplineLength) {
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Do Refresh")); }
+	if (CurrentLength >= Entity.TopRefreshSplineLength && testFlag) {
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Do Refresh")); }
 
-		//int32 i = Entity.TopmostNextSpawnableCounter;
-		//int32 counter = i % SplineUnits.Num();
+		// 1.過去のポイントを消す ProcedualSplinePointBuilder->DestroyPoints();
+		// 2.過去のアクターを消す ProcedualSplineActorsBuilder->DestroyActors();
+		// 3.次のSplineUnitを特定する
+		// 4.次のポイントを生成する ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, StartPoint);
+		// 5.次のポイントのオブジェクトを配置する ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
+		// 6.RefreshEntityParameters();
 
-		//FSplineUnit SplineUnit = SplineUnits[counter];
-		//FSpawnedSplineUnit SpawnedSplineUnit = FSpawnedSplineUnit::GenerateSpawnedSplineUnit(SplineUnit);
+		// 1はあとでやるむずい
+		// 1.過去のポイントを消す ProcedualSplinePointBuilder->DestroyPoints();
+		// 2.過去のアクターを消す ProcedualSplineActorsBuilder->DestroyActors();
+		DeleteFirstSpawnedSplineUnit();
 
-		//ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, SpawnedSplineUnits.Last().NextSpawnPoint);
-		//ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
-		//Entity.TopmostNextSpawnableCounter = i;
+		// 3.次のSplineUnitを特定する
+		int32 i = Entity.TopmostNextSpawnableCounter;
+		int32 counter = i % SplineUnits.Num();
+		FSplineUnit SplineUnit = SplineUnits[counter];
+		FSpawnedSplineUnit SpawnedSplineUnit = FSpawnedSplineUnit::GenerateSpawnedSplineUnit(SplineUnit);
 
-		// 過去のポイントを消す ProcedualSplinePointBuilder->DestroyPoints();
-		// 過去のアクターを消す ProcedualSplineActorsBuilder->DestroyActors();
-		// 次のSplineUnitを特定する
-		// 次のポイントを生成する ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, StartPoint);
-		// 次のポイントのオブジェクトを配置する ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
-		// RefreshEntityParameters();
+		ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, SpawnedSplineUnits.Last().NextSpawnPoint);
+		ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
+
+		SpawnedSplineUnit.DeriveNextSpawnPoint(SpawnedSplineUnits.Top());
+		SpawnedSplineUnit.Length = Spline->GetSplineLength() - CurrentLength;
+		SpawnedSplineUnits.Push(SpawnedSplineUnit);
+
+		Entity.TopmostNextSpawnableCounter = i + 1;
+
+		RefreshEntityParameters();
+		//testFlag = false;
 	}
 	else {
-		//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Still..")); }
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Still..")); }
 	}
 }
+
+/*
+** private
+*/
 
 void UProcedualSplineDirector::RefreshEntityParameters()
 {
@@ -115,4 +131,12 @@ void UProcedualSplineDirector::RefreshEntityParameters()
 	//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::SanitizeFloat(Entity.RearRefreshSplineLength)); }
 	//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::SanitizeFloat(Entity.TopRefreshSplineLength)); }
 
+}
+
+void UProcedualSplineDirector::DeleteFirstSpawnedSplineUnit()
+{
+	// TODO 不要なStructをメモリからどう消すか？調査とdebugで監視
+	FSpawnedSplineUnit *FirstSpawnedSplineUnit = &SpawnedSplineUnits[0];
+	SpawnedSplineUnits.RemoveAt(0);
+	FirstSpawnedSplineUnit->Destroy();
 }

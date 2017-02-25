@@ -6,8 +6,7 @@
 void UProcedualSplinePointBuilder::AssignPointsToSpline(
 	USplineComponent *Spline,
 	FSpawnedSplineUnit &SpawnedSplineUnit,
-	FVector &StartPoint,
-	int32 &PointsIndex
+	FVector &StartPoint
 )
 {
 	FVector PrevDirection = Spline->GetDirectionAtSplinePoint(Spline->GetNumberOfSplinePoints(), ESplineCoordinateSpace::Type::Local);
@@ -15,16 +14,10 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 
 	TArray<FVector> SplinePoints = SpawnedSplineUnit.DeriveSplinePointsAddTo(StartPoint, PrevDirection, PrevRotation);
 
-	//PointsIndex = 0;
 	for (FVector SplinePoint : SplinePoints) {
-		PointsIndex += 1;
-		//Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
-		Spline->AddSplinePointAtIndex(SplinePoint, PointsIndex, ESplineCoordinateSpace::Type::Local);
-		SpawnedSplineUnit.PushAssignedSplineUnitPoints(Spline, PointsIndex);
-		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Red, FString::FromInt(PointsIndex)); }
-		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 100.f, FColor::Blue, FString::FromInt(Spline->GetNumberOfSplinePoints())); }
+		Spline->AddSplinePoint(SplinePoint, ESplineCoordinateSpace::Type::Local);
+		SpawnedSplineUnit.PushAssignedSplineUnitPoints(Spline, Spline->GetNumberOfSplinePoints());
 	}
-	Spline->RemoveSplinePoint(PointsIndex);
 
 }
 

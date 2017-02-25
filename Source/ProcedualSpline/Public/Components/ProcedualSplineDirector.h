@@ -28,8 +28,7 @@ public:
 
 	AActor *Owner;
 
-	// Spline‚ÉƒAƒTƒCƒ“‚·‚éKey‚Æ‚È‚é”Ô†
-	int32 PointsIndex;
+	bool testFlag;
 
 public:
 	void Initialize(
@@ -47,5 +46,7 @@ public:
 
 private:
 	void RefreshEntityParameters();
+
+	void DeleteFirstSpawnedSplineUnit();
 
 };
