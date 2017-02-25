@@ -29,6 +29,11 @@ void AProcedualSplineBase::BeginPlay()
 	ProcedualSplineDirector->CreateInitialSpline();
 }
 
+void AProcedualSplineBase::WatchSplineLifeCycle(float CurrentLength)
+{
+	ProcedualSplineDirector->CheckProcedualSplineEntity(CurrentLength);
+}
+
 FVector AProcedualSplineBase ::GetCurrentLocationAlongSpline(float distance)
 {
 	return Spline->GetWorldLocationAtDistanceAlongSpline(distance);

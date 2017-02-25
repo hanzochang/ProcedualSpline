@@ -38,11 +38,9 @@ public:
 		UProcedualSplineActorsBuilder *InProcedualSplineActorsBuilder
 	);
 
-	void CreateInitialSpline(
-		//TArray<FSplineUnit> &SplineUnits,
-	);
+	void CreateInitialSpline();
 
-	void CheckProcedualSplineEntity(FProcedualSplineEntity &Entity, float CurrentLength);
+	void CheckProcedualSplineEntity(float CurrentLength);
 
 private:
 	void RefreshEntityParameters();

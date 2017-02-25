@@ -7,7 +7,7 @@
       "InheritRotatorPitch": false,
       "InheritRotatorYaw": false,
       "InheritRotatorInRoll": false,
-      "Scalar": 20000.0,
+      "Scalar": 5000.0,
       "Density": 10,
       "CurveUnitRotator": [0,90,0],
       "CurveScalar": 500,

@@ -22,21 +22,18 @@ void UProcedualSplineDirector::Initialize(
     Owner = GetOwner();
 }
 
-void UProcedualSplineDirector::CreateInitialSpline(
-	//TArray<FSplineUnit> &SplineUnits,
-	//TArray<FSpawnedSplineUnit> &SpawnedSplineUnits
-)
+void UProcedualSplineDirector::CreateInitialSpline()
 {
 	// 例外処理を書く。Builderがなかった場合 
 	int32 counter = 0;
-	int32 TopmostSplineNumber = 0;
 	FSpawnedSplineUnit PreviousSpawnedSplineUnit;
 	float CurrentLength = 0;
-	FVector StartPoint = FVector{ 0,0,0 }; //これはSplineStructのほうにいれる
+	FVector StartPoint = FVector{ 0,0,0 };
+
+	Entity.RearmostNextSpawnableCounter = 0; // TODO 要確認
 
 	for (int32 i = 0; i < Entity.DisplayableSplineUnitSum(); i++)
 	{
-		TopmostSplineNumber = Spline->GetNumberOfSplinePoints();
 		CurrentLength = Spline->GetSplineLength();
 		counter = i % SplineUnits.Num();
 		
@@ -53,6 +50,8 @@ void UProcedualSplineDirector::CreateInitialSpline(
 		SpawnedSplineUnits.Push(SpawnedSplineUnit);
 		PreviousSpawnedSplineUnit = SpawnedSplineUnit;
 		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::SanitizeFloat(SpawnedSplineUnit.Length)); }
+
+		Entity.TopmostNextSpawnableCounter = i;
 	}
 
 	RefreshEntityParameters();
@@ -63,9 +62,31 @@ void UProcedualSplineDirector::CreateInitialSpline(
 	//}
 }
 
-void UProcedualSplineDirector::CheckProcedualSplineEntity(FProcedualSplineEntity &Entity, float CurrentLength)
+void UProcedualSplineDirector::CheckProcedualSplineEntity(float CurrentLength)
 {
+	if (CurrentLength >= Entity.TopRefreshSplineLength) {
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Do Refresh")); }
 
+		int32 i = Entity.TopmostNextSpawnableCounter;
+		int32 counter = i % SplineUnits.Num();
+
+		FSplineUnit SplineUnit = SplineUnits[counter];
+		FSpawnedSplineUnit SpawnedSplineUnit = FSpawnedSplineUnit::GenerateSpawnedSplineUnit(SplineUnit);
+
+		ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, SpawnedSplineUnits.Last().NextSpawnPoint);
+		ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
+		Entity.TopmostNextSpawnableCounter = i;
+
+		// 過去のポイントを消す ProcedualSplinePointBuilder->DestroyPoints();
+		// 過去のアクターを消す ProcedualSplineActorsBuilder->DestroyActors();
+		// 次のSplineUnitを特定する
+		// 次のポイントを生成する ProcedualSplinePointBuilder->AssignPointsToSpline(Spline, SpawnedSplineUnit, StartPoint);
+		// 次のポイントのオブジェクトを配置する ProcedualSplineActorsBuilder->SpawnActors(Owner, Spline, SpawnedSplineUnit);
+		// RefreshEntityParameters();
+	}
+	else {
+		if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Still..")); }
+	}
 }
 
 void UProcedualSplineDirector::RefreshEntityParameters()
@@ -87,8 +108,8 @@ void UProcedualSplineDirector::RefreshEntityParameters()
 		SplineLength += SpawnedSplineUnits[i].Length;
 	}
 
-	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::SanitizeFloat(SplineLength)); }
-	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::SanitizeFloat(Entity.RearRefreshSplineLength)); }
-	if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::SanitizeFloat(Entity.TopRefreshSplineLength)); }
+	//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::SanitizeFloat(SplineLength)); }
+	//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString::SanitizeFloat(Entity.RearRefreshSplineLength)); }
+	//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::White, FString::SanitizeFloat(Entity.TopRefreshSplineLength)); }
 
 }

@@ -48,6 +48,9 @@ public:
 
 public:	
 	UFUNCTION(BlueprintCallable, Category=General)
+	void WatchSplineLifeCycle(float CurrentLength);
+
+	UFUNCTION(BlueprintCallable, Category=General)
 	FVector GetCurrentLocationAlongSpline(float distance);
 
 	UFUNCTION(BlueprintCallable, Category=General)
