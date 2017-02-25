@@ -25,8 +25,8 @@ AProcedualSplineBase::AProcedualSplineBase()
 void AProcedualSplineBase::BeginPlay()
 {
 	Super::BeginPlay();
-	ProcedualSplineDirector->Initialize(Spline, &SplineUnits, &ProcedualSplineEntity, ProcedualSplinePointBuilder, ProcedualSplineActorsBuilder);
-	ProcedualSplineDirector->CreateInitialSpline(SplineUnits, SpawnedSplineUnits);
+	ProcedualSplineDirector->Initialize(Spline, SplineUnits, SpawnedSplineUnits, ProcedualSplineEntity, ProcedualSplinePointBuilder, ProcedualSplineActorsBuilder);
+	ProcedualSplineDirector->CreateInitialSpline();
 }
 
 FVector AProcedualSplineBase ::GetCurrentLocationAlongSpline(float distance)

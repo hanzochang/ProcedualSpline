@@ -20,8 +20,9 @@ class PROCEDUALSPLINE_API UProcedualSplineDirector : public UPrimitiveComponent
 
 public:
 	USplineComponent *Spline;
-	TArray<FSplineUnit> *SplineUnits;
-	FProcedualSplineEntity *Entity;
+	TArray<FSplineUnit> SplineUnits;
+	TArray<FSpawnedSplineUnit> SpawnedSplineUnits;
+	FProcedualSplineEntity Entity;
 	UProcedualSplinePointBuilder *ProcedualSplinePointBuilder;
 	UProcedualSplineActorsBuilder *ProcedualSplineActorsBuilder;
 
@@ -30,20 +31,20 @@ public:
 public:
 	void Initialize(
 		USplineComponent *Spline,
-		TArray<FSplineUnit> *SplineUnits,
-		FProcedualSplineEntity *Entity,
+		TArray<FSplineUnit> &SplineUnits,
+		TArray<FSpawnedSplineUnit> &SpawnedSplineUnits,
+		FProcedualSplineEntity &Entity,
 		UProcedualSplinePointBuilder *InProcedualSplinePointBuilder,
 		UProcedualSplineActorsBuilder *InProcedualSplineActorsBuilder
 	);
 
 	void CreateInitialSpline(
-		TArray<FSplineUnit> &SplineUnits,
-		TArray<FSpawnedSplineUnit> &SpawnedSplineUnits
+		//TArray<FSplineUnit> &SplineUnits,
 	);
 
 	void CheckProcedualSplineEntity(FProcedualSplineEntity &Entity, float CurrentLength);
 
 private:
-	void RefreshEntityParameters(TArray<FSpawnedSplineUnit> &SpawnedSplineUnits);
+	void RefreshEntityParameters();
 
 };
