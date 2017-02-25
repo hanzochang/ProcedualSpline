@@ -24,5 +24,5 @@ public:
     int32 Index;
 
 public:
-	static FAssignedSplineUnitPoint GenerateAssignedSplineUnitPoint(USplineComponent *Spline, int32 PointNumber);
+	static FAssignedSplineUnitPoint GenerateAssignedSplineUnitPoint(USplineComponent *Spline, int32 PointsIndex);
 };

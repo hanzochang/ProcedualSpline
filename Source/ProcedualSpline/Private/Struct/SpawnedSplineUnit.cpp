@@ -12,9 +12,9 @@ FSpawnedSplineUnit FSpawnedSplineUnit::GenerateSpawnedSplineUnit(FSplineUnit &In
 
 }
 
-void FSpawnedSplineUnit::PushAssignedSplineUnitPoints(USplineComponent *Spline, int32 PointNumber)
+void FSpawnedSplineUnit::PushAssignedSplineUnitPoints(USplineComponent *Spline, int32 PointsIndex)
 {
-    AssignedSplineUnitPoints.Push(FAssignedSplineUnitPoint::GenerateAssignedSplineUnitPoint(Spline, PointNumber));
+    AssignedSplineUnitPoints.Push(FAssignedSplineUnitPoint::GenerateAssignedSplineUnitPoint(Spline, PointsIndex));
 }
 
 void FSpawnedSplineUnit::PushSpawnedSplineUnitActor(AActor* SpawnedActor)

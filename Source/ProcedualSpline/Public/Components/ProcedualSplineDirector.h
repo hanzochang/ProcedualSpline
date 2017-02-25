@@ -29,7 +29,7 @@ public:
 	AActor *Owner;
 
 	// Spline‚ÉƒAƒTƒCƒ“‚·‚éKey‚Æ‚È‚é”Ô†
-	int32 PointIndex;
+	int32 PointsIndex;
 
 public:
 	void Initialize(

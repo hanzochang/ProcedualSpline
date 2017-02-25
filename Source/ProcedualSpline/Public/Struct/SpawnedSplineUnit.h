@@ -32,7 +32,7 @@ public:
 	static FSpawnedSplineUnit GenerateSpawnedSplineUnit(FSplineUnit &InSplineUnit);
 
 public:
-	void PushAssignedSplineUnitPoints(USplineComponent *Spline, int32 PointNumber);
+	void PushAssignedSplineUnitPoints(USplineComponent *Spline, int32 PointsIndex);
 
 	void PushSpawnedSplineUnitActor(AActor* SpawnedActor);
 
