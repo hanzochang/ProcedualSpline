@@ -23,6 +23,12 @@ void FSpawnedSplineUnit::PushSpawnedSplineUnitActor(AActor* SpawnedActor)
 
 }
 
+TArray<FVector> FSpawnedSplineUnit::DeriveSplinePointsAddTo(FVector StartPoint, FVector PrevDirection, FRotator PrevRotation)
+{
+
+	return SplineUnit.DeriveSplinePointsAddTo(StartPoint, PrevDirection, PrevRotation);
+}
+
 void FSpawnedSplineUnit::DeriveNextSpawnPoint(FSpawnedSplineUnit &SpawnedSplineUnit)
 {
 	FVector FirstPoint = AssignedSplineUnitPoints[0].Location;

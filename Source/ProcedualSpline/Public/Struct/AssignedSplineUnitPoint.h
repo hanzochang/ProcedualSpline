@@ -20,6 +20,9 @@ public:
     UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
     FRotator Rotation;
 
+    UPROPERTY(EditAnyWhere, BluePrintReadWrite, Category = "Struct")
+    int32 Index;
+
 public:
 	static FAssignedSplineUnitPoint GenerateAssignedSplineUnitPoint(USplineComponent *Spline, int32 PointNumber);
 };

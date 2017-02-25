@@ -28,6 +28,9 @@ public:
 
 	AActor *Owner;
 
+	// Spline‚ÉƒAƒTƒCƒ“‚·‚éKey‚Æ‚È‚é”Ô†
+	int32 PointIndex;
+
 public:
 	void Initialize(
 		USplineComponent *Spline,

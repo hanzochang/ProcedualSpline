@@ -36,6 +36,8 @@ public:
 
 	void PushSpawnedSplineUnitActor(AActor* SpawnedActor);
 
+	TArray<FVector> DeriveSplinePointsAddTo(FVector StartPoint, FVector PrevDirection, FRotator PrevRotation);
+
 	void DeriveNextSpawnPoint(FSpawnedSplineUnit &SpawnedSplineUnit);
 
 	void Destroy();

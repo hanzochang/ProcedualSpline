@@ -18,6 +18,7 @@ void UProcedualSplineDirector::Initialize(
 	Entity = InEntity;
 	ProcedualSplinePointBuilder = InProcedualSplinePointBuilder;
 	ProcedualSplineActorsBuilder = InProcedualSplineActorsBuilder;
+	PointIndex = 10000;
 
     Owner = GetOwner();
 }
