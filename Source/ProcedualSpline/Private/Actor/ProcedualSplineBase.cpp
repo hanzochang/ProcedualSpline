@@ -18,6 +18,8 @@ AProcedualSplineBase::AProcedualSplineBase()
     ProcedualSplineActorsBuilder = CreateDefaultSubobject<UProcedualSplineActorsBuilder>(FName("SplineActorsBuilder"));
 	ProcedualSplineEntity = FProcedualSplineEntity(2);
 
+	DeletedSplineLengthsDiff = 0;
+
 	SplineUnits = SplineUnitGenerator->GenerateSplineUnits("splinetest2.json");
 }
 
@@ -25,7 +27,16 @@ AProcedualSplineBase::AProcedualSplineBase()
 void AProcedualSplineBase::BeginPlay()
 {
 	Super::BeginPlay();
-	ProcedualSplineDirector->Initialize(Spline, SplineUnits, SpawnedSplineUnits, ProcedualSplineEntity, ProcedualSplinePointBuilder, ProcedualSplineActorsBuilder);
+	ProcedualSplineDirector->Initialize(
+		Spline,
+		SplineUnits,
+		SpawnedSplineUnits,
+		DeletedSplineLengthsDiff,
+		ProcedualSplineEntity,
+		ProcedualSplinePointBuilder,
+		ProcedualSplineActorsBuilder
+	);
+
 	ProcedualSplineDirector->CreateInitialSpline();
 }
 
@@ -36,15 +47,16 @@ void AProcedualSplineBase::WatchSplineLifeCycle(float CurrentLength)
 
 FVector AProcedualSplineBase ::GetCurrentLocationAlongSpline(float distance)
 {
-	return Spline->GetWorldLocationAtDistanceAlongSpline(distance);
+	//if (GEngine) { GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Black, FString::SanitizeFloat(ProcedualSplineDirector->DeletedSplineLengthsDiff)); }
+	return Spline->GetWorldLocationAtDistanceAlongSpline(distance - ProcedualSplineDirector->DeletedSplineLengthsDiff);
 }
 
 FVector AProcedualSplineBase::GetCurrentDirectionAlongSpline(float distance)
 {
-	return Spline->GetWorldDirectionAtDistanceAlongSpline(distance);
+	return Spline->GetWorldDirectionAtDistanceAlongSpline(distance - ProcedualSplineDirector->DeletedSplineLengthsDiff);
 }
 
 FRotator AProcedualSplineBase::GetCurrentRotationAlongSpline(float distance)
 {
-	return Spline->GetWorldRotationAtDistanceAlongSpline(distance);
+	return Spline->GetWorldRotationAtDistanceAlongSpline(distance - ProcedualSplineDirector->DeletedSplineLengthsDiff);
 }

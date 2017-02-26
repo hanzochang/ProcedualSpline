@@ -28,14 +28,17 @@ public:
 
 	AActor *Owner;
 
+	float DeletedSplineLengthsDiff;
+
 	bool testFlag;
 
 public:
 	void Initialize(
-		USplineComponent *Spline,
-		TArray<FSplineUnit> &SplineUnits,
-		TArray<FSpawnedSplineUnit> &SpawnedSplineUnits,
-		FProcedualSplineEntity &Entity,
+		USplineComponent *InSpline,
+		TArray<FSplineUnit> &InSplineUnits,
+		TArray<FSpawnedSplineUnit> &InSpawnedSplineUnits,
+		float &InDeletedSplineLengthsDiff,
+		FProcedualSplineEntity &InEntity,
 		UProcedualSplinePointBuilder *InProcedualSplinePointBuilder,
 		UProcedualSplineActorsBuilder *InProcedualSplineActorsBuilder
 	);
@@ -45,8 +48,12 @@ public:
 	void CheckProcedualSplineEntity(float CurrentLength);
 
 private:
+	void GenerateNextSpawnedSplineUnit(float CurrentLength);
+
 	void RefreshEntityParameters();
 
 	void DeleteFirstSpawnedSplineUnit();
+
+	void UProcedualSplineDirector::UpdateSpline();
 
 };

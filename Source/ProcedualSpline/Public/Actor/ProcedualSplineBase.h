@@ -45,6 +45,8 @@ public:
 	UProcedualSplinePointBuilder* ProcedualSplinePointBuilder;
 	UProcedualSplineActorsBuilder* ProcedualSplineActorsBuilder;
 
+	// Á‹‚µ‚½SpawnedSplineUnit‚ÌLength‚Ì—İŒv
+	float DeletedSplineLengthsDiff;
 
 public:	
 	UFUNCTION(BlueprintCallable, Category=General)
