@@ -20,11 +20,3 @@ void UProcedualSplinePointBuilder::AssignPointsToSpline(
 	}
 
 }
-
-void DestroyPointsFromSpline(
-	USplineComponent *Spline,
-	FSpawnedSplineUnit &SpawnedSplineUnit
-)
-{
-  // RemoveSplinePoint
-}

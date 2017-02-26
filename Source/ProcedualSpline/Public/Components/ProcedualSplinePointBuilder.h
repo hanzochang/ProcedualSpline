@@ -22,10 +22,4 @@ public:
 		FSpawnedSplineUnit &SpawnedSplineUnit,
 		FVector &StartPoint
 	);
-
-	void DestroyPointsFromSpline(
-		USplineComponent *Spline,
-		FSpawnedSplineUnit &SpawnedSplineUnit
-	);
-
 };

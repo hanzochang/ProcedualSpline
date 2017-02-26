@@ -30,7 +30,7 @@ public:
 
 	float DeletedSplineLengthsDiff;
 
-	bool testFlag;
+	bool Refreshable;
 
 public:
 	void Initialize(
@@ -48,7 +48,7 @@ public:
 	void CheckProcedualSplineEntity(float CurrentLength);
 
 private:
-	void GenerateNextSpawnedSplineUnit(float CurrentLength);
+	void GenerateNextSpawnedSplineUnit();
 
 	void RefreshEntityParameters();
 
