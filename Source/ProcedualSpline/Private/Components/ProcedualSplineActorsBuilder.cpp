@@ -25,6 +25,7 @@ void UProcedualSplineActorsBuilder::SpawnActors(
 						SpawnParams
 					);
 
+
 				SpawnedSplineUnit.PushSpawnedSplineUnitActor(SpawningObject);
 			}
 

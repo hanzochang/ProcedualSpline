@@ -16,45 +16,9 @@
       "loop": 10,
       "SpawnableActors": [
         {
-          "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'",
+          "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_a.B_DebugGrid_a'",
           "PlacementType": "EACH_POINT"
-        }
-      ]
-    },
-    {
-      "WaveType": "WAVE_SIN",
-      "UnitRotator": [15,0,20],
-      "InheritRotatorPitch": false,
-      "InheritRotatorYaw": true,
-      "InheritRotatorInRoll": true,
-      "Scalar": 400000.0,
-      "Density": 50,
-      "CurveUnitRotator": [45,-90,0],
-      "CurveScalar": 10000,
-      "WaveFreq": 2,
-      "Msec": 10,
-      "loop": 10,
-      "SpawnableActors": [
-        {
-          "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'",
-          "PlacementType": "EACH_POINT"
-        }
-      ]
-    },
-    {
-      "WaveType": "WAVE_LINEAR",
-      "UnitRotator": [20,0,20],
-      "InheritRotatorPitch": false,
-      "InheritRotatorYaw": true,
-      "InheritRotatorInRoll": true,
-      "Scalar": 400000.0,
-      "Density": 50,
-      "CurveUnitRotator": [0,90,45],
-      "CurveScalar": 100,
-      "WaveFreq": 1,
-      "Msec": 10,
-      "loop": 10,
-      "SpawnableActors": [
+        },
         {
           "ActorsReference": "Blueprint'/Game/BluePrint/B_DebugGrid_01.B_DebugGrid_01'",
           "PlacementType": "EACH_POINT"
